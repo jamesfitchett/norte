@@ -62,6 +62,7 @@ ul.plain li b{font-weight:500}
 .tag.go{background:var(--accent-soft);color:var(--accent)}
 .tag.hi{background:var(--ink);color:#fff}
 .assume{font-size:12.5px;color:var(--accent);font-weight:500;white-space:nowrap}
+.assume.wrap{white-space:normal}
 
 .langpick{display:flex;align-items:center;gap:14px;margin:-26px 0 48px}
 .langpick .small{margin:0}
@@ -120,6 +121,14 @@ td:first-child{color:var(--graphite);width:24%}
 .comp td{font-size:15px}
 .comp td b{font-weight:500}
 .comp td.ov{width:110px}
+.map{display:grid;grid-template-columns:150px 1fr 1fr;border-top:1px solid var(--ink);margin:6px 0 44px}
+.map > div{padding:16px 18px 16px 0;border-bottom:1px solid var(--hair);font-size:15px}
+.map .ax{font-size:13.5px;color:var(--graphite)}
+.map .cell{padding-left:18px;border-left:1px solid var(--hair);color:var(--graphite)}
+.map .cell b{display:block;font-weight:500;color:var(--ink);margin-bottom:2px}
+.map .open{background:var(--accent-soft)}
+.map .open b{color:var(--accent)}
+.layers .vert{grid-template-columns:200px 120px 1fr}
 
 .calc{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:start}
 .seg2{display:inline-flex;background:var(--wash);border-radius:99px;padding:3px}
@@ -285,6 +294,11 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
   .life{grid-template-columns:1fr;gap:18px}
   .vert{grid-template-columns:1fr auto;gap:6px 12px}
   .vert span.r{grid-column:1 / -1}
+  .layers .vert{grid-template-columns:1fr auto}
+  .map{grid-template-columns:1fr 1fr}
+  .map .corner{display:none}
+  .map .ax.row{grid-column:1 / -1;padding-bottom:4px;border-bottom:0}
+  .map .cell:nth-of-type(odd){border-left:0;padding-left:0}
   .cadence{grid-template-columns:repeat(2,1fr)}
   .cadence div{border-bottom:1px solid var(--hair);padding-bottom:12px}
   .lane{padding:24px 22px 12px;border-radius:18px}
@@ -328,7 +342,7 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
  <div class="wrap">
   <p class="kicker"><span data-l="en">For Cadu, from James. November 2026.</span><span data-l="pt">Pro Cadu, do James. Novembro de 2026.</span></p>
   <h1><span data-l="en">Taking AI collections north.</span><span data-l="pt">Levando a cobrança com IA para o norte.</span></h1>
-  <p class="lede"><span data-l="en">My hypothesis on where to start, if you're still pushing into the US in January: who to target, the full motion, and what it could be worth. <b>Nine tabs, about five minutes.</b></span><span data-l="pt">Minha hipótese de por onde começar, se você ainda pretende entrar nos EUA em janeiro: quem atacar, o plano de vendas completo e quanto isso pode valer. <b>São nove abas, uns cinco minutos.</b></span></p>
+  <p class="lede"><span data-l="en">My hypothesis on where to start, if you're still pushing into the US in January. The short version: recover the written-off balances nobody at a credit union is working, and get paid only on what comes back. <b>Nine tabs, about five minutes.</b></span><span data-l="pt">Minha hipótese de por onde começar, se você ainda pretende entrar nos EUA em janeiro. Resumindo: recuperar os saldos já baixados que ninguém nas cooperativas está cobrando, e ganhar só sobre o que voltar. <b>São nove abas, uns cinco minutos.</b></span></p>
 
   <div class="langpick">
     <p class="small"><span data-l="en">Read in</span><span data-l="pt">Ler em</span></p>
@@ -354,8 +368,8 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
 <section class="panel" id="bet" role="tabpanel">
  <div class="wrap">
   <p class="kicker"><span data-l="en">The bet</span><span data-l="pt">A aposta</span></p>
-  <h2><span data-l="en">Start with mid-sized credit unions. Replace their collection agency.</span><span data-l="pt">Começar pelas cooperativas de crédito de porte médio. Substituir a assessoria de cobrança delas.</span></h2>
-  <p class="lede"><span data-l="en">US enterprise is crowded, as you said. The middle of the credit union market has the same pain, public data on every account, and a pricing model that already matches yours.</span><span data-l="pt">Como você mesmo disse, o enterprise nos EUA já está lotado. O meio do mercado de cooperativas de crédito (as credit unions) tem a mesma dor, dados públicos de cada instituição e um modelo de cobrança parecido com o seu.</span></p>
+  <h2 style="text-wrap:balance"><span data-l="en">Recover the written-off balances nobody works. Get paid only when they pay.</span><span data-l="pt">Recuperar os saldos baixados que ninguém cobra. Ganhar só quando o associado paga.</span></h2>
+  <p class="lede"><span data-l="en">AI collections for credit unions is already crowded in the first weeks of delinquency. After a loan is written off, agencies still run recovery, and they skip small balances because those cost more to chase than they return. AI flips that math, and mid-sized credit unions already pay for recovery the way you charge: a share of what comes back.</span><span data-l="pt">A cobrança com IA pras cooperativas de crédito (as credit unions) já está lotada nas primeiras semanas de atraso. Depois que o empréstimo é baixado, quem cuida da recuperação ainda são as assessorias, e elas deixam de lado os saldos pequenos porque custa mais correr atrás do que recuperar. A IA inverte essa conta, e as cooperativas de porte médio já pagam pela recuperação do jeito que você cobra: uma parte do que volta.</span></p>
 
   <div class="valuehead">
     <h3><span data-l="en">Where the value comes from</span><span data-l="pt">De onde vem o valor</span></h3>
@@ -378,6 +392,18 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
     </div>
   </div>
 
+
+  <div class="block cols layers">
+    <h3><span data-l="en">The moat, layer by layer</span><span data-l="pt">O moat, camada por camada</span></h3>
+    <div>
+      <p class="small" style="margin-bottom:22px"><span data-l="en">No one in AI collections has a moat on day one, and the AI itself won't be one. This one is built in order.</span><span data-l="pt">Ninguém em cobrança com IA tem moat no primeiro dia, e a IA em si não vai ser um. Esse aqui se constrói em etapas.</span></p>
+      <div class="vert"><b><span data-l="en">The wedge</span><span data-l="pt">A porta de entrada</span></b><span class="tag go"><span data-l="en">Day one</span><span data-l="pt">Dia 1</span></span><span class="r"><span data-l="en">The charged-off accounts no agency works. No AI vendor built for credit unions owns this square yet.</span><span data-l="pt">As contas baixadas que nenhuma assessoria trabalha. Nenhum fornecedor de IA feito pra cooperativas ocupa esse espaço ainda.</span> <span class="assume"><span data-l="en">to size with you</span><span data-l="pt">dimensionar com você</span></span></span></div>
+      <div class="vert"><b><span data-l="en">Counter-positioning</span><span data-l="pt">Posicionamento oposto</span></b><span class="tag go"><span data-l="en">Day one</span><span data-l="pt">Dia 1</span></span><span class="r"><span data-l="en">A model rivals can't copy without hurting themselves. Agencies can't go fully AI without gutting their headcount model. AviaryAI and interface.ai can't switch to success fees without breaking the steady software revenue their investors fund.</span><span data-l="pt">Um modelo que o concorrente não consegue copiar sem se prejudicar. As assessorias não conseguem virar IA de vez sem desmontar o modelo baseado em equipe. A AviaryAI e a interface.ai não conseguem mudar pra success fee sem quebrar a receita recorrente que os investidores delas financiam.</span></span></div>
+      <div class="vert"><b><span data-l="en">Embedded</span><span data-l="pt">Enraizado</span></b><span class="tag"><span data-l="en">Year one</span><span data-l="pt">Ano 1</span></span><span class="r"><span data-l="en">A credit union's compliance review is slow and painful, so once you pass it, switching is too. Work each account from 60 days late through recovery and you become one vendor instead of three.</span><span data-l="pt">A avaliação de compliance de uma cooperativa é lenta e trabalhosa, então, depois de aprovado, trocar de fornecedor também é. Trabalhando cada conta dos 60 dias de atraso até a recuperação, você vira um fornecedor no lugar de três.</span></span></div>
+      <div class="vert"><b><span data-l="en">Owned by the channel</span><span data-l="pt">Dono do canal</span></b><span class="tag"><span data-l="en">Year one to two</span><span data-l="pt">Ano 1 a 2</span></span><span class="r"><span data-l="en">A recovery CUSO, a company co-owned by the first credit unions and a state league. They earn on every peer they bring. AviaryAI did this for early-stage calls; nobody has done it for recovery.</span><span data-l="pt">Um CUSO de recuperação, uma empresa com as primeiras cooperativas e uma associação estadual como sócias. Elas ganham em cada cooperativa que trouxerem. A AviaryAI fez isso pras ligações de estágio inicial; ninguém fez ainda pra recuperação.</span> <span class="assume"><span data-l="en">my read</span><span data-l="pt">leitura minha</span></span></span></div>
+      <div class="vert"><b><span data-l="en">Outcome data</span><span data-l="pt">Dados de resultado</span></b><span class="tag"><span data-l="en">Compounds</span><span data-l="pt">Acumula</span></span><span class="r"><span data-l="en">Every recovered dollar shows who pays, which offer works and when. Brazil gives a head start on method, not on US data, so this layer is earned here.</span><span data-l="pt">Cada dólar recuperado mostra quem paga, qual proposta funciona e em que momento. O Brasil dá uma vantagem no método, não nos dados dos EUA, então essa camada se conquista aqui.</span></span></div>
+    </div>
+  </div>
   <div class="block cols">
     <h3><span data-l="en">Where you plug in</span><span data-l="pt">Onde você entra</span></h3>
     <div>
@@ -394,12 +420,12 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
     <h3><span data-l="en">Track A first</span><span data-l="pt">Frente A primeiro</span></h3>
     <div class="tscroll">
     <table>
-      <thead><tr><th></th><th><span data-l="en">Track A: replace the agency</span><span data-l="pt">Frente A: substituir a assessoria</span></th><th><span data-l="en">Track B: help the in-house team</span><span data-l="pt">Frente B: ajudar a equipe interna</span></th></tr></thead>
+      <thead><tr><th></th><th><span data-l="en">Track A: recover what's written off</span><span data-l="pt">Frente A: recuperar o que foi baixado</span></th><th><span data-l="en">Track B: help the in-house team</span><span data-l="pt">Frente B: ajudar a equipe interna</span></th></tr></thead>
       <tbody>
         <tr><td><span data-l="en">Money in play</span><span data-l="pt">Dinheiro em jogo</span></td><td><span data-l="en">Written-off balances</span><span data-l="pt">Saldos já baixados</span></td><td><span data-l="en">Missed payments</span><span data-l="pt">Parcelas em atraso</span></td></tr>
         <tr><td><span data-l="en">Success fee fit</span><span data-l="pt">Encaixe do success fee</span></td><td><span data-l="en">Natural. It undercuts the agency.</span><span data-l="pt">Natural. Sai mais barato que a assessoria.</span></td><td><span data-l="en">Awkward. Buyers expect per-call or flat pricing.</span><span data-l="pt">Estranho. O comprador espera pagar por ligação ou um valor fixo.</span></td></tr>
-        <tr><td><span data-l="en">Competes with</span><span data-l="pt">Concorre com</span></td><td><span data-l="en">Collection agencies</span><span data-l="pt">Assessorias de cobrança</span></td><td><span data-l="en">Funded AI vendors already selling here</span><span data-l="pt">Fornecedores de IA bem capitalizados, que já vendem aqui</span></td></tr>
-        <tr><td><span data-l="en">Legal weight</span><span data-l="pt">Peso regulatório</span></td><td><span data-l="en">Heavier. Federal collection law covers outside collectors, and many states require a collection license.</span><span data-l="pt">Mais pesado. A lei federal de cobrança vale para cobradores terceirizados, e muitos estados exigem licença.</span><sup><a href="#s-bet">6</a></sup></td><td><span data-l="en">Lighter. Lenders collecting their own debts in their own name are mostly exempt from that law, though some state laws still apply. Consent rules for calls and texts apply to both.</span><span data-l="pt">Mais leve. Quem cobra a própria dívida, no próprio nome, fica em grande parte fora dessa lei, mas algumas leis estaduais ainda valem. As regras de consentimento para ligações e SMS valem nos dois casos.</span><sup><a href="#s-bet">7</a></sup></td></tr>
+        <tr><td><span data-l="en">Competes with</span><span data-l="pt">Concorre com</span></td><td><span data-l="en">Agencies, digital agencies and AI startups that sell to every lender. None are built for credit unions.</span><span data-l="pt">Assessorias, assessorias digitais e startups de IA que vendem pra qualquer credor. Nenhuma é feita pra cooperativas.</span></td><td><span data-l="en">Funded AI vendors already selling here</span><span data-l="pt">Fornecedores de IA bem capitalizados, que já vendem aqui</span></td></tr>
+        <tr><td><span data-l="en">Legal weight</span><span data-l="pt">Peso regulatório</span></td><td><span data-l="en">Heavier if you collect in your own name: federal collection law, plus licenses and bonds in many states. Lighter if the AI calls in the credit union's name. Details on Competitors.</span><span data-l="pt">Mais pesado se você cobrar no seu próprio nome: lei federal de cobrança, mais licença e caução em vários estados. Mais leve se a IA ligar no nome da cooperativa. Detalhes na aba Concorrentes.</span><sup><a href="#s-bet">6</a></sup></td><td><span data-l="en">Lighter. Lenders collecting their own debts in their own name are mostly exempt from that law, though some state laws still apply. Consent rules for calls and texts apply to both.</span><span data-l="pt">Mais leve. Quem cobra a própria dívida, no próprio nome, fica em grande parte fora dessa lei, mas algumas leis estaduais ainda valem. As regras de consentimento para ligações e SMS valem nos dois casos.</span><sup><a href="#s-bet">7</a></sup></td></tr>
         <tr><td><span data-l="en">Role</span><span data-l="pt">Papel</span></td><td><span class="tag go"><span data-l="en">Lead with this</span><span data-l="pt">Começar por aqui</span></span></td><td><span class="tag"><span data-l="en">Expand into this</span><span data-l="pt">Expandir depois</span></span></td></tr>
       </tbody>
     </table>
@@ -492,9 +518,20 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
 <section class="panel" id="comp" role="tabpanel">
  <div class="wrap">
   <p class="kicker"><span data-l="en">Competitor landscape</span><span data-l="pt">Concorrentes</span></p>
-  <h2 style="max-width:23ch"><span data-l="en">Early-stage collections is crowded. Recovery is less so.</span><span data-l="pt">Cobrança em estágio inicial está lotada. Recuperação, nem tanto.</span></h2>
-  <p class="lede"><span data-l="en">Well-funded AI companies already sell to credit unions, mostly for the first weeks of delinquency. Every one of them got in through credit-union money, state leagues, or one anchor customer.</span><span data-l="pt">Empresas de IA bem capitalizadas já vendem pras cooperativas, quase sempre focadas nas primeiras semanas de atraso. Todas entraram por dinheiro das próprias cooperativas, pelas associações estaduais ou por um cliente âncora.</span></p>
+  <h2 style="max-width:23ch"><span data-l="en">Early stage is crowded. Recovery built for credit unions is open.</span><span data-l="pt">O estágio inicial está lotado. Recuperação feita pra cooperativas está em aberto.</span></h2>
+  <p class="lede"><span data-l="en">Two groups to watch. AI vendors that already sell to credit unions, mostly in the first weeks late. And recovery players, from digital agencies to new AI startups, that sell to every lender and aren't built for credit unions.</span><span data-l="pt">Dois grupos pra ficar de olho. Fornecedores de IA que já vendem pras cooperativas, quase sempre nas primeiras semanas de atraso. E quem atua em recuperação, de assessorias digitais a startups novas de IA, que vende pra qualquer credor e não é feito pra cooperativas.</span></p>
 
+
+  <div class="map">
+    <div class="corner"></div><div class="ax"><span data-l="en">Early stage, 1 to 90 days late</span><span data-l="pt">Estágio inicial, 1 a 90 dias</span></div><div class="ax"><span data-l="en">Recovery, after charge-off</span><span data-l="pt">Recuperação, depois da baixa</span></div>
+    <div class="ax row"><span data-l="en">Built for credit unions</span><span data-l="pt">Feito pra cooperativas</span></div>
+    <div class="cell"><b>AviaryAI, interface.ai, Eltropy</b><span data-l="en">Crowded, well funded, tied to leagues.</span><span data-l="pt">Lotado, bem capitalizado, ligado às associações.</span></div>
+    <div class="cell open"><b><span data-l="en">Open</span><span data-l="pt">Em aberto</span></b><span data-l="en">Where you start.</span><span data-l="pt">Onde você começa.</span></div>
+    <div class="ax row"><span data-l="en">Sells to every lender</span><span data-l="pt">Vende pra qualquer credor</span></div>
+    <div class="cell"><b>Salient, Veritus</b><span data-l="en">Large auto lenders and banks.</span><span data-l="pt">Grandes financeiras de veículos e bancos.</span></div>
+    <div class="cell"><b>TrueAccord, InDebted, Skit.ai, Prodigal, CollectWise</b><span data-l="en">Agencies and AI startups, plus the agencies you would replace.</span><span data-l="pt">Assessorias e startups de IA, além das assessorias que você substituiria.</span></div>
+  </div>
+  <h3 class="sub"><span data-l="en">Selling to credit unions today</span><span data-l="pt">Já vendendo pras cooperativas</span></h3>
   <div class="tscroll">
   <table class="comp">
     <thead><tr><th><span data-l="en">Company</span><span data-l="pt">Empresa</span></th><th><span data-l="en">What they sell</span><span data-l="pt">O que vendem</span></th><th><span data-l="en">How they got in</span><span data-l="pt">Como entraram</span></th><th><span data-l="en">Overlap with you</span><span data-l="pt">Sobreposição</span></th></tr></thead>
@@ -504,17 +541,44 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
       <tr><td><b>Eltropy</b></td><td><span data-l="en">Texting and AI conversations. Bought a collections tech company in January 2026.</span><span data-l="pt">Mensagens e conversas com IA. Comprou uma empresa de tecnologia de cobrança em janeiro de 2026.</span><sup><a href="#s-comp">5</a></sup></td><td><span data-l="en">Recognized by 31 of 33 state credit union leagues. First investment of Curql, the fund owned by credit unions.</span><span data-l="pt">Reconhecida por 31 de 33 associações estaduais de cooperativas. Foi o primeiro investimento do Curql, o fundo das próprias cooperativas.</span><sup><a href="#s-comp">6</a></sup></td><td class="ov"><span class="tag"><span data-l="en">Medium</span><span data-l="pt">Média</span></span></td></tr>
       <tr><td><b>Posh</b></td><td><span data-l="en">Conversational AI for member service, not collections.</span><span data-l="pt">IA conversacional para atendimento, não cobrança.</span></td><td><span data-l="en">Funded by Curql and the credit union insurer's venture arm. Twelve credit unions later invested in its CUSO.</span><span data-l="pt">Recebeu investimento do Curql e do braço de venture da seguradora das cooperativas. Depois, 12 cooperativas investiram no CUSO dela.</span><sup><a href="#s-comp">7</a></sup></td><td class="ov"><span class="tag"><span data-l="en">Low</span><span data-l="pt">Baixa</span></span></td></tr>
       <tr><td><b>Salient</b></td><td><span data-l="en">AI servicing and collections for large auto lenders and banks.</span><span data-l="pt">Atendimento e cobrança com IA para grandes financeiras de veículos e bancos.</span></td><td><span data-l="en">One anchor customer, Westlake Financial, built it alongside the founders. The first five or six customers came from one demo.</span><span data-l="pt">Um cliente âncora, a Westlake Financial, construiu o produto junto com os fundadores. Os cinco ou seis primeiros clientes vieram de uma única demo.</span><sup><a href="#s-comp">8</a></sup></td><td class="ov"><span class="tag"><span data-l="en">Low at this size</span><span data-l="pt">Baixa neste porte</span></span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub"><span data-l="en">Working recovery, for every lender</span><span data-l="pt">Atuando em recuperação, pra qualquer credor</span></h3>
+  <div class="tscroll">
+  <table class="comp">
+    <thead><tr><th><span data-l="en">Company</span><span data-l="pt">Empresa</span></th><th><span data-l="en">What they sell</span><span data-l="pt">O que vendem</span></th><th><span data-l="en">How they got in</span><span data-l="pt">Como entraram</span></th><th><span data-l="en">Overlap with you</span><span data-l="pt">Sobreposição</span></th></tr></thead>
+    <tbody>
+      <tr><td><b>TrueAccord</b></td><td><span data-l="en">Digital-first agency using machine learning on late-stage and charged-off debt, paid on contingency.</span><span data-l="pt">Assessoria digital que usa machine learning em dívida atrasada e baixada, paga por êxito.</span><sup><a href="#s-comp">11</a></sup></td><td><span data-l="en">Licensed agency since 2013. Clients often test it side by side with their current agency on a slice of accounts.</span><span data-l="pt">Assessoria licenciada desde 2013. Os clientes costumam testar lado a lado com a assessoria atual, numa parte das contas.</span><sup><a href="#s-comp">12</a></sup></td><td class="ov"><span class="tag hi"><span data-l="en">High</span><span data-l="pt">Alta</span></span></td></tr>
+      <tr><td><b>InDebted</b></td><td><span data-l="en">Digital collection agency. 70% of its revenue now comes from the US.</span><span data-l="pt">Assessoria de cobrança digital. 70% da receita já vem dos EUA.</span><sup><a href="#s-comp">13</a></sup></td><td><span data-l="en">Licensed agency. Raised a $40M Series C in 2024.</span><span data-l="pt">Assessoria licenciada. Captou uma Série C de US$ 40 milhões em 2024.</span></td><td class="ov"><span class="tag"><span data-l="en">Medium</span><span data-l="pt">Média</span></span></td></tr>
+      <tr><td><b>Skit.ai</b></td><td><span data-l="en">Voice AI for collections, priced on performance, with credit union portfolios among its clients.</span><span data-l="pt">IA de voz pra cobrança, com preço por performance e carteiras de cooperativas entre os clientes.</span><sup><a href="#s-comp">14</a></sup></td><td><span data-l="en">Sells mostly to collection agencies, so it rides on their licenses.</span><span data-l="pt">Vende principalmente pras assessorias, então usa as licenças delas.</span></td><td class="ov"><span class="tag hi"><span data-l="en">High</span><span data-l="pt">Alta</span></span></td></tr>
+      <tr><td><b>Prodigal</b></td><td><span data-l="en">AI agents for loan servicing and collections. 100+ lenders and debt buyers.</span><span data-l="pt">Agentes de IA pra atendimento de crédito e cobrança. Mais de 100 credores e compradores de dívida.</span><sup><a href="#s-comp">15</a></sup></td><td><span data-l="en">Y Combinator. Started by analyzing collections calls, then automated them.</span><span data-l="pt">Y Combinator. Começou analisando ligações de cobrança e depois passou a automatizar.</span></td><td class="ov"><span class="tag"><span data-l="en">Medium</span><span data-l="pt">Média</span></span></td></tr>
+      <tr><td><b>CollectWise</b></td><td><span data-l="en">AI that runs the whole late-stage recovery process for creditors and agencies.</span><span data-l="pt">IA que roda todo o processo de recuperação de dívida atrasada pra credores e assessorias.</span><sup><a href="#s-comp">16</a></sup></td><td><span data-l="en">Y Combinator, fall 2024. Founder-led sales, now hiring its first account executive.</span><span data-l="pt">Y Combinator, 2024. Vendas feitas pelo fundador, agora contratando o primeiro executivo de contas.</span></td><td class="ov"><span class="tag hi"><span data-l="en">High</span><span data-l="pt">Alta</span></span></td></tr>
+      <tr><td><b><span data-l="en">Newer AI startups</span><span data-l="pt">Startups de IA mais novas</span></b></td><td><span data-l="en">Veritus, Altur and Audun build voice agents for lenders and agencies.</span><span data-l="pt">Veritus, Altur e Audun fazem agentes de voz pra credores e assessorias.</span><sup><a href="#s-comp">17</a></sup></td><td><span data-l="en">All Y Combinator, 2025 and 2026. Seed stage.</span><span data-l="pt">Todas da Y Combinator, 2025 e 2026. Estágio seed.</span></td><td class="ov"><span class="tag"><span data-l="en">Medium</span><span data-l="pt">Média</span></span></td></tr>
+      <tr><td><b><span data-l="en">Heading to the US</span><span data-l="pt">Vindo pros EUA</span></b></td><td><span data-l="en">Murphy (Spain, backed by ElevenLabs), OpenDebt (Australia) and Mozart (Uruguay, also expanding into Brazil).</span><span data-l="pt">Murphy (Espanha, com investimento da ElevenLabs), OpenDebt (Austrália) e Mozart (Uruguai, que também está entrando no Brasil).</span><sup><a href="#s-comp">18</a></sup></td><td><span data-l="en">Proven at home first, now expanding. The same path you are on.</span><span data-l="pt">Validaram no país de origem e agora estão expandindo. O mesmo caminho que você está fazendo.</span></td><td class="ov"><span class="tag"><span data-l="en">Watch</span><span data-l="pt">Acompanhar</span></span></td></tr>
       <tr><td><b><span data-l="en">Collection agencies</span><span data-l="pt">Assessorias de cobrança</span></b></td><td><span data-l="en">The status quo for written-off debt. Paid a share of what they recover.</span><span data-l="pt">O padrão atual para dívida baixada. Recebem uma parte do que recuperam.</span></td><td><span data-l="en">Long relationships, and partnerships with state leagues.</span><span data-l="pt">Relações antigas e parcerias com as associações estaduais.</span><sup><a href="#s-comp">9</a></sup></td><td class="ov"><span class="tag go"><span data-l="en">Who you replace</span><span data-l="pt">Quem você substitui</span></span></td></tr>
     </tbody>
   </table>
   </div>
 
-  <div class="block cols" style="margin-top:36px">
+  <div class="block cols layers" style="margin-top:36px">
+    <h3><span data-l="en">Barriers to entry in recovery</span><span data-l="pt">Barreiras de entrada na recuperação</span></h3>
+    <div>
+      <p class="small" style="margin-bottom:22px"><span data-l="en">The weight depends on one choice: whose name the AI calls in. These barriers slow you down, and they slow the next startup more. Once cleared, they become part of the moat.</span><span data-l="pt">O peso depende de uma escolha: em nome de quem a IA liga. Essas barreiras te atrasam, e atrasam ainda mais a próxima startup. Depois de superadas, viram parte do moat.</span></p>
+      <div class="vert"><b><span data-l="en">In the credit union's name</span><span data-l="pt">No nome da cooperativa</span></b><span class="tag go"><span data-l="en">Start here</span><span data-l="pt">Começar aqui</span></span><span class="r"><span data-l="en">You sell software and the credit union stays the collector. Creditors collecting in their own name sit mostly outside federal collection law. Your brand never appears on a call or letter, or the exemption can flip.</span><span data-l="pt">Você vende software e a cooperativa continua sendo quem cobra. Credor que cobra no próprio nome fica, em grande parte, fora da lei federal de cobrança. Sua marca nunca aparece numa ligação ou carta, senão a isenção pode cair.</span> <span class="assume wrap"><span data-l="en">a lawyer confirms vendor status and the success fee, state by state</span><span data-l="pt">um advogado confirma o status do fornecedor e o success fee, estado por estado</span></span></span></div>
+      <div class="vert"><b><span data-l="en">As a licensed agency</span><span data-l="pt">Como assessoria licenciada</span></b><span class="tag"><span data-l="en">Later</span><span data-l="pt">Depois</span></span><span class="r"><span data-l="en">Licenses state by state, a separate bond in 30 states ($5K to $300K, at 2 to 10% a year), and weeks of review per state, plus a compliance team. The TrueAccord and InDebted path.</span><span data-l="pt">Licença estado por estado, uma caução separada em 30 estados (de US$ 5 mil a US$ 300 mil, a 2% a 10% ao ano) e semanas de análise em cada estado, mais uma equipe de compliance. O caminho da TrueAccord e da InDebted.</span><sup><a href="#s-comp">19</a></sup></span></div>
+      <div class="vert"><b><span data-l="en">Through licensed agencies</span><span data-l="pt">Por meio de assessorias licenciadas</span></b><span class="tag"><span data-l="en">Backup</span><span data-l="pt">Plano B</span></span><span class="r"><span data-l="en">The agency holds the license and the risk. Faster, but it keeps the client and most of the margin. The Skit.ai path.</span><span data-l="pt">A assessoria fica com a licença e o risco. É mais rápido, mas ela fica com o cliente e com a maior parte da margem. O caminho da Skit.ai.</span></span></div>
+      <div class="vert"><b><span data-l="en">On every path</span><span data-l="pt">Em qualquer caminho</span></b><span class="tag"><span data-l="en">Always</span><span data-l="pt">Sempre</span></span><span class="r"><span data-l="en">AI voice calls need prior consent since the 2024 FCC ruling. About 32 states have collection laws that reach creditors too. Examiners now check third-party risk wherever a credit union outsources collections.</span><span data-l="pt">Ligação com voz de IA exige consentimento prévio desde a decisão da FCC de 2024. Uns 32 estados têm leis de cobrança que valem também pro credor. E os fiscais agora avaliam o risco de fornecedor sempre que a cooperativa terceiriza a cobrança.</span><sup><a href="#s-comp">20</a></sup></span></div>
+    </div>
+  </div>
+  <div class="block cols">
     <h3><span data-l="en">What this means for you</span><span data-l="pt">O que isso significa pra você</span></h3>
     <ul class="plain">
-      <li><b><span data-l="en">Lead with recovery.</span><span data-l="pt">Começar pela recuperação.</span></b> <span data-l="en">Most AI tools here work the first weeks of delinquency. Written-off debt is still mostly run by agencies.</span><span data-l="pt">A maioria das ferramentas de IA atua nas primeiras semanas de atraso. A dívida baixada ainda está, na maior parte, na mão das assessorias.</span> <span class="assume"><span data-l="en">my read</span><span data-l="pt">leitura minha</span></span></li>
+      <li><b><span data-l="en">Lead with recovery.</span><span data-l="pt">Começar pela recuperação.</span></b> <span data-l="en">Credit union AI tools work the first weeks of delinquency. Written-off debt is still mostly run by agencies.</span><span data-l="pt">As ferramentas de IA das cooperativas atuam nas primeiras semanas de atraso. A dívida baixada ainda está, na maior parte, na mão das assessorias.</span> <span class="assume"><span data-l="en">my read</span><span data-l="pt">leitura minha</span></span></li>
+      <li><b><span data-l="en">Recovery isn't empty, it's generic.</span><span data-l="pt">A recuperação não está vazia, está genérica.</span></b> <span data-l="en">Digital agencies and AI startups already do recovery for every lender. Your edge is being built for credit unions: their name on the call, their compliance review, and their peers as the channel.</span><span data-l="pt">Assessorias digitais e startups de IA já fazem recuperação pra qualquer credor. Seu diferencial é ser feito pra cooperativas: o nome delas na ligação, a avaliação de compliance delas e as outras cooperativas como canal.</span></li>
       <li><b><span data-l="en">Earn trust the way they did.</span><span data-l="pt">Ganhar confiança do jeito que eles ganharam.</span></b> <span data-l="en">One anchor customer, investors tied to credit unions, then the leagues. The motion is built around this.</span><span data-l="pt">Um cliente âncora, investidores ligados às cooperativas e depois as associações. O plano de vendas foi montado em cima disso.</span></li>
-      <li><b><span data-l="en">Your angle.</span><span data-l="pt">Seu diferencial.</span></b> <span data-l="en">Priced like the agency they already pay, works every account including small balances, and possibly speaks Spanish.</span><span data-l="pt">Preço no mesmo modelo da assessoria que eles já pagam, trabalha todas as contas, inclusive os saldos pequenos, e talvez fale espanhol.</span></li>
+      <li><b><span data-l="en">Your angle.</span><span data-l="pt">Seu diferencial.</span></b> <span data-l="en">Priced like the agency they already pay, starting with the small balances nobody works, and possibly in Spanish. The full moat is on The bet.</span><span data-l="pt">Preço no mesmo modelo da assessoria que eles já pagam, começando pelos saldos pequenos que ninguém cobra, e talvez em espanhol. O moat completo está na aba A aposta.</span></li>
       <li><b><span data-l="en">Some targets already use these tools.</span><span data-l="pt">Algumas contas-alvo já usam essas ferramentas.</span></b> <span data-l="en">Hughes, a Tier A account, uses Eltropy in collections. Those accounts are flagged in the list.</span><span data-l="pt">A Hughes, uma conta A, usa a Eltropy na cobrança. Essas contas estão sinalizadas na lista.</span><sup><a href="#s-comp">10</a></sup></li>
     </ul>
   </div>
@@ -531,6 +595,16 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
       <li><a href="https://fortune.com/2025/12/18/salients-quiet-ai-boom-how-this-two-year-old-startup-is-building-a-company-to-survive-the-bubble-burst/">Fortune on Salient</a></li>
       <li><a href="https://cutimes.com/2005/01/18/california-cu-league-finds-strong-allies-in-cu-battle-for-loss-recovery">CU Times, league and agency partnership</a></li>
       <li><a href="https://eltropy.com/why-eltropy/">Eltropy, Hughes collections story</a></li>
+      <li><a href="https://www.trueaccord.com/?p=6294">TrueAccord, contingency collections</a>; <a href="https://blog.trueaccord.com/category/industry-insights/page/21/">TrueAccord, pre and post charge-off</a></li>
+      <li><a href="https://blog.trueaccord.com/tag/digital-debt-collection/page/4">TrueAccord, Snap Finance side-by-side test</a></li>
+      <li><a href="https://www.businesswire.com/news/home/20240924812507/en/Australian-Founded-Fintech-Transforming-Debt-Collection-in-the-USA-Secures-US40M">Business Wire, InDebted Series C</a>; <a href="https://www.fintechfutures.com/press-releases/australian-founded-fintech-transforming-debt-collection-in-the-usa-secures-us-40m">FinTech Futures, US revenue share</a></li>
+      <li><a href="https://ainora.lt/blog/skit-ai-alternatives-debt-collection-2026">AInora, Skit.ai and alternatives</a> (vendor-written comparison)</li>
+      <li><a href="https://www.ycombinator.com/companies/prodigal">Y Combinator, Prodigal</a>; <a href="https://www.loansjagat.com/news/prodigal-ai-the-future-of-debt-collection-and-loan-servicing-with-generative-intelligence">LoansJagat, Prodigal customers</a></li>
+      <li><a href="https://www.ycombinator.com/companies/collectwise">Y Combinator, CollectWise</a>; <a href="https://runtimewire.com/article/collectwise-founding-account-executive-ai-debt-collection">RuntimeWire, first AE hire</a></li>
+      <li><a href="https://www.ycombinator.com/companies/veritus">Y Combinator, Veritus</a>; <a href="https://amanydv2112-suggest-orgs.hf.space/company/yc/altur">Altur profile</a>; <a href="https://www.ycombinator.com/companies/audun">Y Combinator, Audun</a></li>
+      <li><a href="https://www.finextra.com/pressarticle/106313/ai-startup-murphy-raises-15m">Finextra, Murphy</a>; <a href="https://www.startupdaily.net/?p=140336">Startup Daily, OpenDebt</a>; <a href="https://www.pulse.bot/venture-capital/news/mozart-raises-600k-pre-seed-round-9eed0e40-b85f-4027-be78-d424e87110cd/">Pulse, Mozart</a></li>
+      <li><a href="https://www.scottins.com/for-the-business/surety-bonds/license-surety-bonds-2/collection-agency-bonds/">Scott Bond Services, bonds by state</a>; <a href="https://getlicensemap.com/states/collection-agency/massachusetts">LicenseMap, bond range</a>; <a href="https://www.interprose.com/resources/first-party-collections-original-creditors">InterProse, first-party collections</a>; <a href="https://www.faegredrinker.com/en/insights/publications/2016/1/a-cautionary-tale-ftc-warns-industry-of-broad-meaning-of-debt-collector">Faegre Drinker, the false-name rule</a></li>
+      <li><a href="https://wiley.law/alert-FCC-Extends-Regulatory-Reach-Over-AI-Announces-TCPA-Restrictions-Cover-AI-Generated-Voices-in-Outbound-Calls">Wiley, FCC ruling on AI voice</a>; <a href="https://abi.org/node/223523">American Bankruptcy Institute, state laws</a>; <a href="https://mitratech.com/resource-hub/blog/vendor-risk-management-exam-grc/">Mitratech, NCUA letter 26-CU-01</a></li>
     </ol>
   </div>
   <div class="next"><button class="btn ghost" data-go="icp"><span data-l="en">Back</span><span data-l="pt">Voltar</span></button><button class="btn" data-go="money"><span data-l="en">Next: Money on the table</span><span data-l="pt">Próximo: Quanto vale</span></button></div>
@@ -727,6 +801,17 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
     </div>
   </div>
 
+
+  <div class="block cols layers">
+    <h3><span data-l="en">What each step locks in</span><span data-l="pt">O que cada etapa garante</span></h3>
+    <div>
+      <p class="small" style="margin-bottom:22px"><span data-l="en">The playbook is the one every credit union vendor uses. The offer and what each step builds are what make it yours.</span><span data-l="pt">O playbook é o mesmo que todo fornecedor de cooperativa usa. O que o torna seu é a oferta e o que cada etapa constrói.</span></p>
+      <div class="vert"><b><span data-l="en">Pilots on returned batches</span><span data-l="pt">Pilotos com lotes devolvidos</span></b><span class="tag go"><span data-l="en">The wedge</span><span data-l="pt">Porta de entrada</span></span><span class="r"><span data-l="en">A near-zero-risk yes that doesn't touch their agency or early-stage vendor, and the first US outcome data.</span><span data-l="pt">Um sim quase sem risco, que não mexe na assessoria nem no fornecedor de estágio inicial, e os primeiros dados de resultado nos EUA.</span></span></div>
+      <div class="vert"><b><span data-l="en">Passing compliance review</span><span data-l="pt">Passar no compliance</span></b><span class="tag"><span data-l="en">Embedded</span><span data-l="pt">Enraizado</span></span><span class="r"><span data-l="en">The vendor packet gets approved once, then reused at every new credit union.</span><span data-l="pt">O pacote de fornecedor é aprovado uma vez e reaproveitado em cada nova cooperativa.</span></span></div>
+      <div class="vert"><b><span data-l="en">Credit-union investors and leagues</span><span data-l="pt">Investidores e associações</span></b><span class="tag"><span data-l="en">The channel</span><span data-l="pt">O canal</span></span><span class="r"><span data-l="en">The first co-owners of a recovery CUSO, not only sources of intros.</span><span data-l="pt">Os primeiros sócios de um CUSO de recuperação, não só fontes de indicação.</span></span></div>
+      <div class="vert"><b><span data-l="en">Referral program</span><span data-l="pt">Programa de indicação</span></b><span class="tag"><span data-l="en">Compounds</span><span data-l="pt">Acumula</span></span><span class="r"><span data-l="en">Peers sell for you, and every new account adds outcome data.</span><span data-l="pt">As outras cooperativas vendem por você, e cada conta nova soma dados de resultado.</span></span></div>
+    </div>
+  </div>
   <div class="sources" id="s-motion"><span data-l="en">Sources</span><span data-l="pt">Fontes</span>
     <ol>
       <li><a href="https://www.pymnts.com/?p=2748422">PYMNTS, how credit unions find fintech partners</a></li>
@@ -836,6 +921,7 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
       <li><b><span data-l="en">Who refers.</span><span data-l="pt">Quem indica.</span></b> <span data-l="en">Credit unions already live, their CUSOs, and state leagues.</span><span data-l="pt">Cooperativas que já usam, os CUSOs delas e as associações estaduais.</span></li>
       <li><b><span data-l="en">What they get.</span><span data-l="pt">O que ganham.</span></b> <span data-l="en">A share of your success fee on every account they bring, for the first year.</span><span data-l="pt">Uma parte do seu success fee em cada conta que trouxerem, durante o primeiro ano.</span></li>
       <li><b><span data-l="en">Make it easy.</span><span data-l="pt">Facilitar ao máximo.</span></b> <span data-l="en">Write the intro email for them and close the first referral fast. Most partners send nothing until money lands once.</span><span data-l="pt">Escrever o e-mail de apresentação por eles e fechar a primeira indicação rápido. A maioria dos parceiros só começa a indicar depois de receber a primeira vez.</span></li>
+      <li><b><span data-l="en">The bigger version.</span><span data-l="pt">A versão maior.</span></b> <span data-l="en">Turn the first referrers into co-owners of a recovery CUSO with a state league. AviaryAI did this for early-stage calls.</span><span data-l="pt">Transformar os primeiros que indicarem em sócios de um CUSO de recuperação, junto com uma associação estadual. A AviaryAI fez isso pras ligações de estágio inicial.</span><sup><a href="#s-scale">3</a></sup></li>
       <li><b><span data-l="en">To check.</span><span data-l="pt">A verificar.</span></b> <span data-l="en">How each credit union can accept referral income. Paying its CUSO or league may be simpler.</span><span data-l="pt">Como cada cooperativa pode receber por indicação. Pagar ao CUSO ou à associação pode ser mais simples.</span> <span class="assume"><span data-l="en">to verify</span><span data-l="pt">a confirmar</span></span></li>
     </ul>
   </div>
@@ -851,7 +937,7 @@ footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font
   <div class="block cols">
     <h3><span data-l="en">Next step</span><span data-l="pt">Próximo passo</span></h3>
     <div>
-      <p><span data-l="en">Tell me which assumptions are wrong. Four matter most: Track A or Track B, whether the success fee carries over to the US, whether Spanish is ready, and how you feel about investors tied to credit unions.</span><span data-l="pt">Me fala quais premissas estão erradas. Quatro pesam mais: Frente A ou Frente B, se o success fee funciona nos EUA, se o espanhol já está pronto e o que você acha de investidores ligados às cooperativas.</span></p>
+      <p><span data-l="en">Tell me which assumptions are wrong. Four matter most: whether your Brazil book is mostly small written-off balances, whether the success fee carries over to the US, whether Spanish is ready, and how you feel about investors tied to credit unions and a recovery CUSO.</span><span data-l="pt">Me fala quais premissas estão erradas. Quatro pesam mais: se a sua carteira no Brasil é mais de saldos pequenos já baixados, se o success fee funciona nos EUA, se o espanhol já está pronto e o que você acha de investidores ligados às cooperativas e de um CUSO de recuperação.</span></p>
       <p><span data-l="en">If the shape is right, I can have the Tier A list, the warm-intro asks and the first sequence ready before January.</span><span data-l="pt">Se o desenho fizer sentido, consigo deixar a lista do grupo A, os pedidos de indicação e a primeira sequência prontos antes de janeiro.</span></p>
     </div>
   </div>
@@ -881,9 +967,9 @@ function T(en,p){return pt()?p:en}
 function both(en,p){return '<span data-l="en">'+en+'</span><span data-l="pt">'+p+'</span>'}
 
 var INDEX=[
- ["bet",["The bet","A aposta"],["Why credit unions, why now, and where the value comes from.","Por que cooperativas de crédito, por que agora e de onde vem o valor."]],
+ ["bet",["The bet","A aposta"],["The wedge, why it holds together, and the moat in layers.","A porta de entrada, por que a conta fecha e o moat em camadas."]],
  ["icp",["ICP","ICP"],["Exactly which credit unions, and which verticals wait.","Exatamente quais cooperativas, e quais verticais ficam pra depois."]],
- ["comp",["Competitors","Concorrentes"],["Who already sells here, and how they got in.","Quem já vende nesse mercado e como entrou."]],
+ ["comp",["Competitors","Concorrentes"],["Who sells here, who works recovery, and the barriers to entry.","Quem vende aqui, quem atua em recuperação e as barreiras de entrada."]],
  ["money",["Money on the table","Quanto vale"],["A calculator for what one account is worth.","Uma calculadora do quanto vale cada conta."]],
  ["accounts",["Target accounts","Contas-alvo"],["Real credit unions, tiered A, B and C.","Cooperativas reais, divididas em A, B e C."]],
  ["motion",["The motion","Como vender"],["Warm intros and cold outreach, run together.","Indicações e prospecção ativa, rodando juntas."]],
@@ -1042,6 +1128,10 @@ var OBJ=[
   "Good, then you already know AI can reach members.",
   "Does it work accounts after charge-off, or mostly the first few weeks late?",
   "We only touch what your agency already gave back, so nothing overlaps. One batch, 30 days, success fee only."],
+ ["You're the fifth AI collections company to call me.",["Existing solution","Já tem solução"],
+  "I believe it. There are a lot of us.",
+  "Were the others about members a few weeks late, or about the accounts your agency sends back?",
+  "We only take the accounts nobody is working, in your name, on a success fee. If the others cover that, I will leave you alone."],
  ["Just send me some information.",["Brush-off","Desculpa automática"],
   "Happy to. Most of what I would send is a brochure, and you have seen enough of those.",
   "So I send something useful: is the bigger issue what your agency keeps, or the accounts nobody is working?",

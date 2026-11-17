@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Norte: a US go-to-market hypothesis</title>
+<meta name="description" content="A working hypothesis for taking AI voice and text collections into US credit unions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ffffff; --wash:#f5f5f7; --ink:#1d1d1f; --graphite:#6e6e73; --mist:#a1a1a6;
+  --hair:#d9d9de; --accent:#0b6b4f; --accent-soft:#e8f3ef;
+  --font:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --w:1040px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1,"ss01" 1}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 28px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(18px);
+  -webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--hair)}
+.bar .wrap{display:flex;align-items:center;gap:28px;height:56px}
+.mark{font-weight:600;font-size:18px;letter-spacing:-.02em;text-decoration:none;flex:none;display:flex;align-items:center;gap:9px}
+.mark i{display:block;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;margin-right:-28px;padding-right:28px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;font-size:14px;color:var(--graphite);padding:7px 12px;border-radius:99px;white-space:nowrap;transition:color .15s,background .15s}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);background:var(--wash);font-weight:500}
+.progress{height:2px;background:var(--accent);width:12.5%;transition:width .35s cubic-bezier(.2,.7,.2,1);margin-bottom:-1px}
+
+/* panels */
+.panel{display:none;padding:72px 0 40px}
+.panel.on{display:block}
+.kicker{font-size:15px;color:var(--graphite);margin:0 0 18px}
+h1{font-size:clamp(40px,7.2vw,84px);line-height:1.02;letter-spacing:-.04em;font-weight:500;margin:0 0 28px;max-width:14ch}
+h2{font-size:clamp(32px,5vw,56px);line-height:1.06;letter-spacing:-.035em;font-weight:500;margin:0 0 20px;max-width:18ch}
+h3{font-size:22px;line-height:1.25;letter-spacing:-.015em;font-weight:500;margin:0 0 10px}
+.lede{font-size:clamp(19px,2.2vw,23px);line-height:1.42;color:var(--graphite);max-width:56ch;margin:0 0 56px;letter-spacing:-.01em}
+.lede b{color:var(--ink);font-weight:500}
+p{margin:0 0 14px;max-width:64ch}
+.small{font-size:14px;color:var(--graphite);line-height:1.5}
+.block{border-top:1px solid var(--hair);padding:36px 0}
+.block:last-of-type{border-bottom:1px solid var(--hair)}
+.cols{display:grid;grid-template-columns:220px 1fr;gap:28px}
+.cols > h3{color:var(--ink)}
+sup a{color:var(--accent);text-decoration:none;font-size:11px;font-weight:600;padding:0 1px}
+ul.plain{list-style:none;margin:0;padding:0}
+ul.plain li{padding:10px 0;border-top:1px solid var(--hair);max-width:68ch}
+ul.plain li:first-child{border-top:0;padding-top:0}
+ul.plain li b{font-weight:500}
+.tag{display:inline-block;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:99px;background:var(--wash);color:var(--graphite);white-space:nowrap}
+.tag.go{background:var(--accent-soft);color:var(--accent)}
+.assume{font-size:12.5px;color:var(--accent);font-weight:500;white-space:nowrap}
+
+/* start */
+.index{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.index li{border-bottom:1px solid var(--hair)}
+.index button{display:grid;grid-template-columns:44px 200px 1fr 20px;gap:12px;align-items:baseline;width:100%;text-align:left;padding:18px 0}
+.index .n{color:var(--mist);font-size:14px}
+.index .t{font-size:20px;font-weight:500;letter-spacing:-.015em}
+.index .d{color:var(--graphite);font-size:15.5px}
+.index svg{width:14px;height:14px;stroke:var(--mist);align-self:center;transition:transform .2s,stroke .2s}
+.index button:hover svg{transform:translateX(4px);stroke:var(--accent)}
+.index button:hover .t{color:var(--accent)}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:56px;border-top:1px solid var(--hair)}
+.trio div{padding:22px 24px 4px 0;border-right:1px solid var(--hair);margin-right:24px}
+.trio div:last-child{border-right:0;margin-right:0}
+.trio b{display:block;font-weight:500;margin-bottom:4px}
+.trio span{color:var(--graphite);font-size:15px;display:block}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hair)}
+.stat{padding:30px 28px 30px 0;border-right:1px solid var(--hair);margin-right:28px}
+.stat:last-child{border-right:0;margin-right:0;padding-right:0}
+.stat .v{font-size:clamp(40px,5vw,60px);letter-spacing:-.04em;line-height:1;font-weight:500;margin-bottom:12px}
+.stat .v small{font-size:.45em;letter-spacing:-.01em;color:var(--graphite);font-weight:400;margin-left:4px}
+.stat p{font-size:15.5px;color:var(--graphite);margin:0}
+
+/* timeline of a missed loan */
+.life{position:relative;margin:8px 0 6px;display:grid;grid-template-columns:1.1fr .5fr 1.4fr;gap:0}
+.life .seg{padding:0 18px 0 0}
+.life .rail{height:6px;border-radius:3px;background:var(--wash);margin-bottom:16px;position:relative}
+.life .seg.b .rail{background:linear-gradient(90deg,#cfe6dd,#9fcdbb)}
+.life .seg.c .rail{background:var(--ink)}
+.life .seg.a .rail{background:var(--accent)}
+.life .when{font-size:13.5px;color:var(--graphite);margin-bottom:4px}
+.life .what{font-weight:500;margin-bottom:4px}
+.life .who{font-size:14.5px;color:var(--graphite);max-width:30ch}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th{font-weight:500;text-align:left;color:var(--graphite);font-size:13.5px;padding:10px 14px 10px 0;border-bottom:1px solid var(--ink);vertical-align:bottom}
+td{padding:13px 14px 13px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+td:first-child{color:var(--graphite);width:26%}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.fits{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+.fits div{padding:16px 0;border-top:1px solid var(--hair)}
+.fits div:nth-child(-n+2){border-top:0;padding-top:0}
+.fits b{display:block;font-weight:500;margin-bottom:2px}
+.fits span{color:var(--graphite);font-size:15.5px}
+
+/* verticals */
+.vert{display:grid;grid-template-columns:230px 130px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--hair);align-items:baseline}
+.vert:first-child{border-top:0;padding-top:0}
+.vert b{font-weight:500}
+.vert span.r{color:var(--graphite);font-size:15.5px}
+.vert.off b,.vert.off span.r{color:var(--mist)}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:start}
+.seg2{display:inline-flex;background:var(--wash);border-radius:99px;padding:3px;margin-bottom:30px}
+.seg2 button{padding:8px 18px;border-radius:99px;font-size:14.5px;color:var(--graphite);transition:all .18s}
+.seg2 button[aria-pressed="true"]{background:var(--paper);color:var(--ink);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.field{padding:16px 0;border-top:1px solid var(--hair)}
+.field:first-of-type{border-top:0;padding-top:0}
+.field label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:15px;margin-bottom:10px}
+.field label span{color:var(--graphite)}
+.field output{font-weight:500;font-size:17px;letter-spacing:-.01em}
+.field .hint{font-size:13px;color:var(--graphite);margin-top:8px;line-height:1.45}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:none;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:2px;background:linear-gradient(90deg,var(--ink) var(--p,50%),var(--hair) var(--p,50%))}
+input[type=range]::-moz-range-track{height:3px;border-radius:2px;background:var(--hair)}
+input[type=range]::-moz-range-progress{height:3px;border-radius:2px;background:var(--ink)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid var(--hair);box-shadow:0 1px 4px rgba(0,0,0,.18);margin-top:-10px}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:1px solid var(--hair);box-shadow:0 1px 4px rgba(0,0,0,.18)}
+select{font:inherit;font-size:15px;color:var(--ink);background:var(--wash);border:0;border-radius:10px;padding:10px 34px 10px 14px;width:100%;appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236e6e73' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.result{position:sticky;top:84px;background:var(--wash);border-radius:22px;padding:34px 34px 28px}
+.result .cap{font-size:15px;color:var(--graphite);margin-bottom:6px}
+.result .big{font-size:clamp(52px,7vw,88px);letter-spacing:-.045em;line-height:1;font-weight:500;color:var(--accent);margin-bottom:6px}
+.result .per{font-size:15px;color:var(--graphite);margin-bottom:26px}
+.flow{list-style:none;margin:0;padding:0}
+.flow li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-top:1px solid var(--hair);font-size:15.5px}
+.flow li span:first-child{color:var(--graphite)}
+.flow li span:last-child{font-weight:500;white-space:nowrap}
+.flow li.hl span{color:var(--ink)}
+.bars{margin-top:22px;padding-top:18px;border-top:1px solid var(--hair)}
+.bars .row{display:grid;grid-template-columns:96px 1fr 76px;gap:10px;align-items:center;font-size:14px;margin:8px 0}
+.bars .row span:first-child{color:var(--graphite)}
+.bars .row span:last-child{text-align:right;font-weight:500}
+.bars .track{height:8px;border-radius:4px;background:#e6e6ea;overflow:hidden}
+.bars .fill{height:100%;border-radius:4px;background:var(--mist);transition:width .3s}
+.bars .row.me .fill{background:var(--accent)}
+.note{font-size:13.5px;color:var(--graphite);margin-top:20px;line-height:1.5}
+
+/* accounts */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.chip{font-size:14px;padding:7px 14px;border-radius:99px;background:var(--wash);color:var(--graphite)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.count{margin-left:auto;font-size:14px;color:var(--graphite)}
+.acct td:first-child{color:var(--ink);width:auto}
+.acct td{font-size:15px;white-space:nowrap}
+.acct td.nm{white-space:normal;min-width:210px}
+.acct td.nm b{font-weight:500;display:block}
+.acct td.nm span{font-size:13.5px;color:var(--graphite)}
+.acct td.num,.acct th.num{text-align:right}
+.acct tr.row{cursor:pointer}
+.acct tr.row:hover td{background:#fafafb}
+.tier{display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:var(--wash);color:var(--graphite)}
+.tier.A{background:var(--accent);color:#fff}
+.tier.B{background:var(--accent-soft);color:var(--accent)}
+.up{color:#b3261e;font-size:13px;margin-left:4px}
+.dn{color:var(--graphite);font-size:13px;margin-left:4px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:middle}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:36px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.rules div{padding:20px 24px 20px 0;border-right:1px solid var(--hair);margin-right:24px;font-size:15px;color:var(--graphite)}
+.rules div:last-child{border-right:0;margin-right:0}
+.rules b{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:500;margin-bottom:6px}
+
+/* motion */
+.steps{counter-reset:s;list-style:none;margin:0;padding:0}
+.steps > li{counter-increment:s;display:grid;grid-template-columns:44px 250px 1fr;gap:12px;padding:26px 0;border-top:1px solid var(--hair)}
+.steps > li::before{content:counter(s);color:var(--mist);font-size:14px;padding-top:4px}
+.steps h3{margin:0 0 4px;font-size:20px}
+.steps .when{font-size:14px;color:var(--graphite)}
+.steps p{font-size:16px;margin-bottom:10px}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.cadence{display:grid;grid-template-columns:repeat(8,1fr);gap:0;margin:6px 0 4px;border-top:1px solid var(--ink)}
+.cadence div{padding:14px 10px 6px 0;border-right:1px solid var(--hair);margin-right:10px;font-size:13.5px;color:var(--graphite);line-height:1.4}
+.cadence div:last-child{border-right:0;margin-right:0}
+.cadence b{display:block;color:var(--ink);font-weight:500;font-size:15px;margin-bottom:6px}
+.cadence i{font-style:normal;display:block}
+.math{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.math div{padding:22px 20px 22px 0;border-right:1px solid var(--hair);margin-right:20px}
+.math div:last-child{border-right:0;margin-right:0}
+.math b{display:block;white-space:nowrap;font-size:30px;letter-spacing:-.03em;font-weight:500;line-height:1.1}
+.math span{font-size:14.5px;color:var(--graphite)}
+
+/* talk tracks */
+.script{background:var(--wash);border-radius:18px;padding:8px 28px;margin-bottom:14px}
+.line{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:20px 0;border-top:1px solid var(--hair)}
+.line:first-child{border-top:0}
+.line .mv{font-size:14px;color:var(--graphite)}
+.line .mv b{display:block;color:var(--ink);font-weight:500;font-size:15px}
+.line q{quotes:none;font-size:18px;line-height:1.45;letter-spacing:-.008em;display:block;max-width:58ch}
+.line q em{font-style:normal;color:var(--accent);font-weight:500}
+details{border-top:1px solid var(--hair)}
+details:last-of-type{border-bottom:1px solid var(--hair)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto 18px;gap:16px;align-items:center;padding:18px 0;font-size:19px;font-weight:500;letter-spacing:-.012em}
+summary::-webkit-details-marker{display:none}
+summary svg{width:14px;height:14px;stroke:var(--graphite);transition:transform .2s}
+details[open] summary svg{transform:rotate(45deg)}
+.ans{padding:0 0 22px;display:grid;grid-template-columns:150px 1fr;gap:10px 20px}
+.ans dt{font-size:14px;color:var(--graphite);padding-top:2px}
+.ans dd{margin:0;max-width:60ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--wash);border-radius:18px;padding:24px 26px}
+.card h3{font-size:16px;color:var(--graphite);font-weight:400;margin-bottom:12px}
+.card p{font-size:16px;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+
+/* scale */
+.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink)}
+.stage{padding:22px 22px 8px 0;border-right:1px solid var(--hair);margin-right:22px}
+.stage:last-child{border-right:0;margin-right:0}
+.stage .when{font-size:13.5px;color:var(--graphite);margin-bottom:8px}
+.stage h3{font-size:19px;margin-bottom:8px}
+.stage p{font-size:15px;color:var(--graphite)}
+
+/* footer + next */
+.next{display:flex;justify-content:space-between;align-items:center;margin-top:56px;gap:16px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:99px;padding:13px 24px;font-size:16px;font-weight:500;transition:background .15s}
+.btn:hover{background:#000}
+.btn.ghost{background:none;color:var(--graphite);padding-left:0}
+.btn.ghost:hover{color:var(--ink);background:none}
+.sources{margin-top:44px;font-size:13px;color:var(--graphite);line-height:1.6}
+.sources ol{margin:8px 0 0;padding-left:18px;columns:2;column-gap:40px}
+.sources li{break-inside:avoid;margin-bottom:3px}
+.sources a{text-decoration-color:var(--hair);text-underline-offset:2px}
+footer{border-top:1px solid var(--hair);margin-top:40px;padding:26px 0 44px;font-size:13.5px;color:var(--graphite)}
+
+@media (prefers-reduced-motion:no-preference){
+  .panel.on > .wrap > *{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+  .panel.on > .wrap > *:nth-child(2){animation-delay:.04s}
+  .panel.on > .wrap > *:nth-child(3){animation-delay:.08s}
+  .panel.on > .wrap > *:nth-child(n+4){animation-delay:.12s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+}
+@media (max-width:860px){
+  body{font-size:16px}
+  .wrap{padding:0 20px}
+  .bar .wrap{gap:14px}
+  .tabs{margin-right:-20px;padding-right:20px}
+  .panel{padding:44px 0 24px}
+  .lede{margin-bottom:40px}
+  .cols,.calc,.two,.fits{grid-template-columns:1fr;gap:14px}
+  .calc{gap:28px}
+  .result{position:static;padding:26px 22px 22px;border-radius:18px;order:-1}
+  .stats,.trio,.rules,.math,.stages{grid-template-columns:1fr}
+  .stat,.trio div,.rules div,.math div,.stage{border-right:0;margin-right:0;border-bottom:1px solid var(--hair);padding:20px 0}
+  .stat:last-child,.trio div:last-child,.rules div:last-child,.math div:last-child,.stage:last-child{border-bottom:0}
+  .index button{grid-template-columns:28px 1fr 16px;gap:4px 8px}
+  .index .d{grid-column:2 / 3}
+  .index svg{grid-row:1;grid-column:3}
+  .life{grid-template-columns:1fr;gap:18px}
+  .vert{grid-template-columns:1fr auto;gap:6px 12px}
+  .vert span.r{grid-column:1 / -1}
+  .steps > li{grid-template-columns:28px 1fr}
+  .steps > li > div:last-child{grid-column:2}
+  .cadence{grid-template-columns:repeat(2,1fr)}
+  .cadence div{border-bottom:1px solid var(--hair);padding-bottom:12px}
+  .line,.ans{grid-template-columns:1fr;gap:6px}
+  .script{padding:4px 20px}
+  .fits div:nth-child(2){border-top:1px solid var(--hair);padding-top:16px}
+  .sources ol{columns:1}
+  summary{font-size:17px;grid-template-columns:1fr 18px}
+  summary .tag{display:none}
+  .count{width:100%;margin:6px 0 0}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#start" data-go="start"><i></i>Norte</a>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" data-go="start">Start</button>
+      <button class="tab" role="tab" data-go="bet">The bet</button>
+      <button class="tab" role="tab" data-go="icp">ICP</button>
+      <button class="tab" role="tab" data-go="money">Money on the table</button>
+      <button class="tab" role="tab" data-go="accounts">Target accounts</button>
+      <button class="tab" role="tab" data-go="motion">The motion</button>
+      <button class="tab" role="tab" data-go="talk">Talk tracks</button>
+      <button class="tab" role="tab" data-go="scale">Scaling</button>
+    </nav>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="panel" id="start" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">For Cadu, from James. November 2026.</p>
+  <h1>Taking AI collections north.</h1>
+  <p class="lede">You said the US is next, starting in January. This is my hypothesis for where to start, who to call first, what to say, and how much it is worth. <b>Eight tabs, about five minutes.</b></p>
+
+  <ol class="index" id="index"></ol>
+
+  <div class="trio">
+    <div><b>What it is</b><span>A starting point built from our September call and public data. Every assumption is marked so you can correct it.</span></div>
+    <div><b>What I assumed</b><span>You still want a US unit in January, a success-fee model carries over, and you would start with written-off debt.</span></div>
+    <div><b>What I would do</b><span>Run this motion myself: build the list, book the first meetings, and tighten the pitch call by call.</span></div>
+  </div>
+
+  <div class="next"><span></span><button class="btn" data-go="bet">Start with the bet</button></div>
+ </div>
+</section>
+
+<!-- BET -->
+<section class="panel" id="bet" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">The bet</p>
+  <h2>Start with mid-sized credit unions. Replace their collection agency.</h2>
+  <p class="lede">US enterprise is crowded, as you said. The middle of the credit union market has the same pain, public data on every account, and a pricing model that already matches yours.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="v">2x</div><p>Credit union loan losses are running near 0.80% of loans, about double the 0.40 to 0.50% they used to hover around.<sup><a href="#s-bet">1</a></sup></p></div>
+    <div class="stat"><div class="v">35%</div><p>What a collection agency keeps in one worked credit union example. The credit union nets 6.4 cents per dollar written off.<sup><a href="#s-bet">2</a></sup></p></div>
+    <div class="stat"><div class="v">$20+</div><p>Cost of one live conversation when a human collector dials: $4 to $6 per attempt, and only about 1 in 5 calls connect.<sup><a href="#s-bet">3</a></sup></p></div>
+  </div>
+
+  <div class="block cols">
+    <h3>Why it holds together</h3>
+    <div class="fits">
+      <div><b>Market and product</b><span>Losses are up and collectors are hard to hire.<sup><a href="#s-bet">4</a></sup> AI can call every account, including the small balances agencies skip.</span></div>
+      <div><b>Product and channel</b><span>Every credit union files its loan losses with the regulator each quarter. Outbound can open with the buyer's own numbers.</span></div>
+      <div><b>Channel and model</b><span>A success fee means no budget request. A cold call can end in a free pilot instead of a procurement cycle.</span></div>
+      <div><b>Model and market</b><span>Credit unions already pay agencies a share of recoveries. Same model, smaller cut, more accounts worked.</span></div>
+    </div>
+  </div>
+
+  <div class="block cols">
+    <h3>Where you plug in</h3>
+    <div>
+      <p class="small" style="margin-bottom:22px">One missed loan, start to finish. Your product can enter at two points. I call them Track B and Track A.</p>
+      <div class="life">
+        <div class="seg b"><div class="rail"></div><div class="when">Days 1 to 90 late</div><div class="what">Track B: early stage</div><div class="who">The credit union's own staff call the member to catch up.</div></div>
+        <div class="seg c"><div class="rail"></div><div class="when">Around month 4 to 6</div><div class="what">Charge-off</div><div class="who">The loan is written off as a loss.</div></div>
+        <div class="seg a"><div class="rail"></div><div class="when">After charge-off</div><div class="what">Track A: recovery</div><div class="who">An outside agency chases the debt and keeps a share of what it collects.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block cols">
+    <h3>Track A first</h3>
+    <div class="tscroll">
+    <table>
+      <thead><tr><th></th><th>Track A: replace the agency</th><th>Track B: help the in-house team</th></tr></thead>
+      <tbody>
+        <tr><td>Money in play</td><td>Written-off balances</td><td>Missed payments</td></tr>
+        <tr><td>Success fee fit</td><td>Natural. It undercuts the agency.</td><td>Awkward. Buyers expect per-call or flat pricing.</td></tr>
+        <tr><td>Competes with</td><td>Collection agencies</td><td>Well-funded AI vendors already selling here</td></tr>
+        <tr><td>Legal weight</td><td>Heavier: outside collectors face federal and state collection rules <span class="assume">to verify</span></td><td>Lighter, though call and text consent rules apply to both<sup><a href="#s-bet">5</a></sup></td></tr>
+        <tr><td>Role</td><td><span class="tag go">Lead with this</span></td><td><span class="tag">Expand into this</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="sources" id="s-bet">Sources
+    <ol>
+      <li><a href="https://www.abrigo.com/blog/a-closer-look-at-where-credit-stress-is-building-for-credit-unions/">Abrigo, credit stress at credit unions</a>; <a href="https://ncua.gov/files/publications/analysis/quarterly-data-summary-2026-Q2.pdf">NCUA Q2 2026 data summary</a> (net charge-offs 0.78%)</li>
+      <li><a href="https://www.americanbanker.com/creditunions/news/looking-again-at-whether-or-not-to-sell-off-your-discharged-debt">American Banker, worked example of agency recoveries</a>. An older single example, not a current benchmark.</li>
+      <li><a href="https://www.withclutch.com/Articles/innovations-in-collections-enhancing-member-experience">Clutch, collections outreach costs</a>. Vendor source.</li>
+      <li><a href="https://www.cuinsight.com/why-credit-unions-are-turning-to-automation-to-fill-staffing-gaps/">CUInsight, staffing gaps in collections</a></li>
+      <li><a href="https://wiley.law/alert-FCC-Extends-Regulatory-Reach-Over-AI-Announces-TCPA-Restrictions-Cover-AI-Generated-Voices-in-Outbound-Calls">Wiley, FCC ruling on AI-generated voice calls (Feb 2024)</a></li>
+    </ol>
+  </div>
+  <div class="next"><button class="btn ghost" data-go="start">Back</button><button class="btn" data-go="icp">Next: ICP</button></div>
+ </div>
+</section>
+
+<!-- ICP -->
+<section class="panel" id="icp" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">Ideal customer profile</p>
+  <h2>A $500M to $5B credit union with rising losses and an agency on contract.</h2>
+  <p class="lede">Big enough to write off millions a year. Small enough that the CFO can approve a no-risk pilot without a committee.</p>
+
+  <div class="block cols">
+    <h3>The profile</h3>
+    <div class="tscroll">
+    <table>
+      <tbody>
+        <tr><td>Size</td><td>$500M to $5B in assets. 748 US credit unions are above $500M and only 21 are above $10B.<sup><a href="#s-icp">1</a></sup></td></tr>
+        <tr><td>Loan mix</td><td>Heavy in used auto and credit cards. Subprime borrowers now hold 16% of credit union auto balances, the fastest-rising share of any loan type.<sup><a href="#s-icp">2</a></sup></td></tr>
+        <tr><td>Credit trend</td><td>Delinquency above the 0.69% median and rising.<sup><a href="#s-icp">3</a></sup></td></tr>
+        <tr><td>Operations</td><td>Small collections team that already sends written-off accounts to an agency. <span class="assume">my assumption</span></td></tr>
+        <tr><td>Members</td><td>Low-income designated or Hispanic-serving. More than 134 credit unions hold the Juntos Avanzamos designation for serving Hispanic members.<sup><a href="#s-icp">4</a></sup></td></tr>
+        <tr><td>Buyers</td><td>VP or Director of Collections feels the workload. The CFO feels the agency fee and signs.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="block cols">
+    <h3>Why the middle</h3>
+    <ul class="plain">
+      <li><b>Under $500M is too small.</b> These are 83% of credit unions, they are losing members, and they cannot absorb new technology costs.<sup><a href="#s-icp">5</a></sup></li>
+      <li><b>Over $10B is enterprise.</b> Long procurement, and the best-funded AI vendors are already there. Salient works with more than five of the top ten US auto lenders.<sup><a href="#s-icp">6</a></sup></li>
+      <li><b>The middle is ready to buy.</b> 59% of credit unions have generative AI in production. The top barrier to more is compliance uncertainty, so the pitch has to lead with it.<sup><a href="#s-icp">7</a></sup></li>
+    </ul>
+  </div>
+
+  <div class="block cols">
+    <h3>Who to skip</h3>
+    <ul class="plain">
+      <li><b>Commercial-loan-heavy credit unions.</b> Their losses sit in business loans, which are not collected by phone and text.</li>
+      <li><b>Credit unions that sell their written-off debt.</b> There is no agency fee to undercut.</li>
+    </ul>
+  </div>
+
+  <div class="block cols">
+    <h3>The other verticals you named</h3>
+    <div>
+      <div class="vert"><b>Credit unions</b><span class="tag go">Start here</span><span class="r">Public data, a familiar pricing model, and about 700 accounts in the size band.</span></div>
+      <div class="vert"><b>Buy-here-pay-here car dealers</b><span class="tag">Second</span><span class="r">Regular dealers hand loans to banks. These dealers finance the car themselves and collect every payment, often weekly. Serious auto delinquency is at a 15-year high.<sup><a href="#s-icp">8</a></sup></span></div>
+      <div class="vert"><b>Health</b><span class="tag">Third</span><span class="r">The pain is real: 91% of hospital revenue leaders call patient balances a top priority.<sup><a href="#s-icp">9</a></sup> Privacy rules and long sales cycles make it a poor first market.</span></div>
+      <div class="vert off"><b>Mortgage</b><span class="tag">Skip for now</span><span class="r">A success fee does not fit monthly mortgage payments, servicing has its own heavy rules, and Salient is already expanding into it.<sup><a href="#s-icp">6</a></sup></span></div>
+    </div>
+  </div>
+
+  <div class="sources" id="s-icp">Sources
+    <ol>
+      <li><a href="https://ncua.gov/files/publications/analysis/quarterly-data-summary-2026-Q1.pdf">NCUA Q1 2026 data summary</a>; <a href="https://ncua.gov/files/publications/analysis/quarterly-data-summary-2025-Q3.pdf">NCUA Q3 2025</a></li>
+      <li><a href="https://www.cutimes.com/amp/2026/04/24/credit-unions-must-embrace-automated-collections-before-its-too-late/">CU Times, citing Equifax</a></li>
+      <li><a href="https://ncua.gov/analysis/credit-union-corporate-call-report-data/ncua-quarterly-us-map-review/second-quarter-2026">NCUA map review, Q2 2026</a></li>
+      <li><a href="https://www.cuinsight.com/press-release/centra-credit-union-receives-juntos-avanzamos-designation/">CUInsight, Juntos Avanzamos network size</a></li>
+      <li><a href="https://cuscorecard.blastpoint.com/trends/national">BlastPoint credit union scorecard</a></li>
+      <li><a href="https://fortune.com/2025/12/18/salients-quiet-ai-boom-how-this-two-year-old-startup-is-building-a-company-to-survive-the-bubble-burst/">Fortune on Salient</a>; <a href="https://geo.sig.ai/brands/salient.md">Salient company profile</a></li>
+      <li><a href="https://ai4fis.beehiiv.com/p/deploy-agents-with-a-strategy">Cornerstone Advisors findings</a>; <a href="https://www.wipfli.com/insights/articles/executive-summary-the-state-of-the-credit-union-industry">Wipfli credit union survey</a></li>
+      <li><a href="https://www.cbtnews.com/auto-loan-originations-hit-a-record-in-q2/">CBT News on New York Fed data</a>; <a href="https://digitaldealer.com/news/more-due-dates-more-missed-payments-what-the-fed-found-in-bhph-lending/173241/">Digital Dealer on Fed research</a></li>
+      <li><a href="https://www.hfma.org/?p=121607">HFMA and PayZen survey, 2026</a></li>
+    </ol>
+  </div>
+  <div class="next"><button class="btn ghost" data-go="bet">Back</button><button class="btn" data-go="money">Next: Money on the table</button></div>
+ </div>
+</section>
+
+<!-- MONEY -->
+<section class="panel" id="money" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">Money on the table</p>
+  <h2>What one credit union is worth.</h2>
+  <p class="lede">Pick an account or move the sliders. Loan and loss figures come from public filings. Recovery and pricing are assumptions, so they are yours to change.</p>
+
+  <div class="calc">
+    <div>
+      <div class="seg2" role="group" aria-label="Track">
+        <button id="trA" aria-pressed="true">Track A: recovery</button>
+        <button id="trB" aria-pressed="false">Track B: early stage</button>
+      </div>
+
+      <div class="field">
+        <label for="preset"><span>Account</span></label>
+        <select id="preset"></select>
+      </div>
+      <div class="field">
+        <label for="loans"><span>Total loans</span><output id="o-loans"></output></label>
+        <input type="range" id="loans" min="200" max="5000" step="25" value="1100">
+      </div>
+
+      <div id="fa">
+        <div class="field">
+          <label for="nco"><span>Written off per year, % of loans</span><output id="o-nco"></output></label>
+          <input type="range" id="nco" min="0.2" max="5" step="0.01" value="0.78">
+          <div class="hint">US credit union average is 0.78% (NCUA, Q2 2026). This is net of money already recovered, so it runs conservative.</div>
+        </div>
+        <div class="field">
+          <label for="rec"><span>Share of written-off dollars recovered</span><output id="o-rec"></output></label>
+          <input type="range" id="rec" min="1" max="25" step="0.1" value="9.8">
+          <div class="hint"><span class="assume">Assumption.</span> 9.8% over four years in the one public agency example I found. Published results range from about 3% to 12%.</div>
+        </div>
+        <div class="field">
+          <label for="fee"><span>Your success fee</span><output id="o-fee"></output></label>
+          <input type="range" id="fee" min="5" max="40" step="1" value="20">
+        </div>
+        <div class="field">
+          <label for="afee"><span>Agency fee today</span><output id="o-afee"></output></label>
+          <input type="range" id="afee" min="15" max="50" step="1" value="35">
+          <div class="hint">35% in the same example. Consumer agencies commonly quote 25 to 35%.</div>
+        </div>
+      </div>
+
+      <div id="fb" hidden>
+        <div class="field">
+          <label for="dq"><span>Loans 60+ days late, % of loans</span><output id="o-dq"></output></label>
+          <input type="range" id="dq" min="0.2" max="4" step="0.01" value="0.96">
+          <div class="hint">US credit union average is 0.96% (NCUA, Q2 2026). Members 1 to 59 days late are not in this figure, so real early-stage volume is higher.</div>
+        </div>
+        <div class="field">
+          <label for="bal"><span>Average loan balance</span><output id="o-bal"></output></label>
+          <input type="range" id="bal" min="5000" max="40000" step="500" value="19500">
+          <div class="hint">NCUA average was $19,557 in Q1 2026.</div>
+        </div>
+        <div class="field">
+          <label for="att"><span>Contact attempts per late member, per month</span><output id="o-att"></output></label>
+          <input type="range" id="att" min="2" max="20" step="1" value="8">
+          <div class="hint"><span class="assume">Assumption.</span></div>
+        </div>
+        <div class="field">
+          <label for="ppa"><span>Your price per attempt</span><output id="o-ppa"></output></label>
+          <input type="range" id="ppa" min="0.1" max="3" step="0.05" value="0.75">
+          <div class="hint"><span class="assume">Assumption.</span> Early-stage vendors usually price per call or per month, not on a success fee.</div>
+        </div>
+        <div class="field">
+          <label for="hc"><span>Human cost per attempt</span><output id="o-hc"></output></label>
+          <input type="range" id="hc" min="2" max="8" step="0.25" value="5">
+          <div class="hint">$4 to $6 with wages, benefits and overhead (vendor estimate).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result" aria-live="polite">
+      <div class="cap" id="r-cap">Your revenue from this account</div>
+      <div class="big" id="r-big">$0</div>
+      <div class="per">per year</div>
+      <ul class="flow" id="r-flow"></ul>
+      <div class="bars" id="r-bars"></div>
+      <p class="note" id="r-note"></p>
+    </div>
+  </div>
+
+  <div class="sources" id="s-money">Sources
+    <ol>
+      <li><a href="https://ncua.gov/files/publications/analysis/quarterly-data-summary-2026-Q2.pdf">NCUA Q2 2026 data summary</a> (delinquency 0.96%, net charge-offs 0.78%)</li>
+      <li><a href="https://ncua.gov/files/publications/analysis/quarterly-data-summary-2026-Q1.pdf">NCUA Q1 2026 data summary</a> (average loan balance)</li>
+      <li><a href="https://www.americanbanker.com/creditunions/news/looking-again-at-whether-or-not-to-sell-off-your-discharged-debt">American Banker, agency recovery example</a></li>
+      <li><a href="https://www.withclutch.com/Articles/innovations-in-collections-enhancing-member-experience">Clutch, cost per outbound attempt</a></li>
+    </ol>
+  </div>
+  <div class="next"><button class="btn ghost" data-go="icp">Back</button><button class="btn" data-go="accounts">Next: Target accounts</button></div>
+ </div>
+</section>
+
+<!-- ACCOUNTS -->
+<section class="panel" id="accounts" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">Target accounts</p>
+  <h2 id="acct-h">Real credit unions, tiered.</h2>
+  <p class="lede" id="acct-lede">A first cut of the list, tiered by how urgent the problem looks from the outside. Tap a row to load it into the calculator.</p>
+
+  <div class="rules">
+    <div><b><span class="tier A">A</span>Call first</b>Writing off 1.5% of loans or more a year, or 1.5% or more of loans 60+ days late and up at least a quarter point in a year. Hispanic-serving with above-average write-offs also counts.</div>
+    <div><b><span class="tier B">B</span>Strong fit</b>Write-offs above the 0.78% national average, or late loans above 0.96%.</div>
+    <div><b><span class="tier C">C</span>Volume</b>Right size and loan mix, losses at or below average.</div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="chip" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" data-f="A" aria-pressed="false">Tier A</button>
+    <button class="chip" data-f="B" aria-pressed="false">Tier B</button>
+    <button class="chip" data-f="C" aria-pressed="false">Tier C</button>
+        <span class="count" id="count"></span>
+  </div>
+  <div class="tscroll">
+  <table class="acct">
+    <thead><tr><th>Tier</th><th>Credit union</th><th class="num">Assets</th><th class="num">Loans</th><th class="num">60+ days late</th><th class="num">Written off</th><th class="num">Est. value / yr</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  </div>
+  <p class="note" id="acct-note"></p>
+
+  <div class="next"><button class="btn ghost" data-go="money">Back</button><button class="btn" data-go="motion">Next: The motion</button></div>
+ </div>
+</section>
+
+<!-- MOTION -->
+<section class="panel" id="motion" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">The motion</p>
+  <h2>Six weeks from list to first pilots.</h2>
+  <p class="lede">Outbound, run by one person, built so every call and email opens with the buyer's own numbers. This is how I would run it for you.</p>
+
+  <ol class="steps">
+    <li>
+      <div><h3>Build the list</h3><div class="when">Week 1</div></div>
+      <div><p>Download the regulator's quarterly filing for every US credit union. Filter to $500M to $5B, score on losses and trend, and tier A, B, C. About 700 accounts fit the band.</p>
+      <div class="tools"><span class="tag">NCUA call report data, free</span><span class="tag">Clay or a spreadsheet</span></div></div>
+    </li>
+    <li>
+      <div><h3>Find the people</h3><div class="when">Week 1</div></div>
+      <div><p>Three contacts per account: the collections or recovery lead, the Chief Lending Officer, and the CFO. Direct and mobile numbers first, because connect rate is the first bottleneck.</p>
+      <div class="tools"><span class="tag">LinkedIn Sales Navigator</span><span class="tag">Apollo</span><span class="tag">Clay enrichment</span></div></div>
+    </li>
+    <li>
+      <div><h3>Write one true line per account</h3><div class="when">Week 1</div></div>
+      <div><p>A one-sentence hook from their own filing: what they wrote off last year and which way it is moving. Generated in bulk, checked by hand for Tier A.</p>
+      <div class="tools"><span class="tag">Claude on the NCUA data</span></div></div>
+    </li>
+    <li>
+      <div><h3>Run a 30-day sequence</h3><div class="when">Weeks 2 to 5</div></div>
+      <div><p>Ten to fourteen touches across phone, email and LinkedIn. One problem per email thread. Tier A gets every touch by hand, Tier C is mostly automated.</p>
+      <div class="cadence">
+        <div><b>Day 1</b><i>Email</i><i>LinkedIn view</i><i>Call</i></div>
+        <div><b>Day 3</b><i>Call</i><i>Reply in thread</i></div>
+        <div><b>Day 7</b><i>Call</i><i>LinkedIn note</i><i>Bump</i></div>
+        <div><b>Day 11</b><i>Call</i><i>New thread: second problem</i></div>
+        <div><b>Day 15</b><i>Call</i><i>Reply in thread</i></div>
+        <div><b>Day 19</b><i>Short, direct email</i></div>
+        <div><b>Day 23</b><i>Breakup email</i></div>
+        <div><b>Day 27</b><i>Last note, door open</i></div>
+      </div>
+      <div class="tools" style="margin-top:14px"><span class="tag">Sequencer: Apollo or Smartlead</span><span class="tag">Dialer: Nooks or Orum</span><span class="tag">CRM: HubSpot or Attio</span></div></div>
+    </li>
+    <li>
+      <div><h3>Turn meetings into pilots</h3><div class="when">Weeks 3 to 6</div></div>
+      <div><p>The first meeting sells a test, not a contract: one batch of accounts the agency has already given up on, 30 days, success fee only. Their compliance team reviews the call and text scripts before anything goes live.</p>
+      <div class="tools"><span class="tag">One-page pilot terms</span><span class="tag">Compliance packet</span></div></div>
+    </li>
+    <li>
+      <div><h3>Get better every call</h3><div class="when">Every week</div></div>
+      <div><p>Your advice to me in September: do the job the 2026 way, and be a little better after every call. Every call is recorded and reviewed, objections are logged, and the talk tracks change weekly.</p>
+      <div class="tools"><span class="tag">Granola for call notes</span><span class="tag">Weekly scorecard</span></div></div>
+    </li>
+  </ol>
+
+  <div class="block cols" style="margin-top:20px">
+    <h3>The numbers to hit</h3>
+    <div>
+      <div class="math">
+        <div><b>75</b><span>dials a day, in a morning block</span></div>
+        <div><b>10 to 15%</b><span>connect rate</span></div>
+        <div><b>1 in 150</b><span>dials becomes a meeting</span></div>
+        <div><b>10</b><span>meetings in the first 30 days</span></div>
+      </div>
+      <p class="note">Working benchmarks from my SDR training, not promises. Email and LinkedIn add meetings on top. I would track three rates weekly: connect, set, and show.</p>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn ghost" data-go="accounts">Back</button><button class="btn" data-go="talk">Next: Talk tracks</button></div>
+ </div>
+</section>
+
+<!-- TALK -->
+<section class="panel" id="talk" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">Talk tracks</p>
+  <h2>What I would actually say.</h2>
+  <p class="lede">Built on the 30 Minutes to President's Club playbook: own the cold call, name one painful problem, and sell the test drive instead of the product.<sup><a href="#s-talk">1</a></sup> Green text is filled in from each account's public filing. Lakeshore is a made-up example.</p>
+
+  <h3 style="margin-bottom:16px">Cold call to a collections leader</h3>
+  <div class="script">
+    <div class="line"><div class="mv"><b>Opener</b>Context, own it, ask permission</div><q>Hi Dana, it's James. I was reading <em>Lakeshore's latest call report</em> before I dialed. Full honesty, this is a cold call. Can I take 30 seconds to say why I called, and then you decide if we keep going?</q></div>
+    <div class="line"><div class="mv"><b>Problem</b>Specific enough to be wrong</div><q>You wrote off about <em>$8.6 million</em> in loans over the last year, <em>up from the year before</em>. At most credit unions your size, those accounts go to an agency that keeps around a third of whatever comes back and only really works the larger balances. The small ones never get a call.</q></div>
+    <div class="line"><div class="mv"><b>Ask</b>Sell the test drive</div><q>We use AI voice and text to work every one of those accounts, for a success fee below an agency's. Would 15 minutes next week be worth it to see what a 30-day test on one old batch could look like? If it collects nothing, it costs nothing.</q></div>
+  </div>
+  <p class="small" style="margin-bottom:44px">Permission-based openers booked meetings on 11.2% of calls in Gong's study of 300 million cold calls, against 2.2% for "Did I catch you at a bad time?"<sup><a href="#s-talk">2</a></sup></p>
+
+  <div class="two" style="margin-bottom:48px">
+    <div class="card">
+      <h3>First email, to the CFO. Under 80 words.</h3>
+      <p><b style="font-weight:500">Subject: <em style="font-style:normal;color:var(--accent)">$8.6M</em> written off</b></p>
+      <p>Dana, <em style="font-style:normal;color:var(--accent)">Lakeshore</em> wrote off about <em style="font-style:normal;color:var(--accent)">$8.6M</em> in loans last year, per your call report.</p>
+      <p>If an agency recovers a tenth of that and keeps a third, roughly <em style="font-style:normal;color:var(--accent)">$300K</em> goes to fees.</p>
+      <p>We work the same accounts with AI voice and text, including the small balances, for a lower success fee. Nothing collected, nothing owed.</p>
+      <p>Open to a 30-day test on one batch your agency has already returned?</p>
+    </div>
+    <div class="card">
+      <h3>Voicemail and LinkedIn note</h3>
+      <p><b style="font-weight:500">Voicemail, 15 seconds.</b> Dana, James here. I sent you a short note about <em style="font-style:normal;color:var(--accent)">Lakeshore's</em> written-off loans and what your agency keeps. No need to call back, the email has the numbers.</p>
+      <p><b style="font-weight:500">LinkedIn, after the call.</b> Dana, tried you earlier. I work on AI voice and text for charged-off accounts at credit unions. Your <em style="font-style:normal;color:var(--accent)">Q2</em> numbers made me think it could be useful. Happy to share what I found either way.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:6px">Objections</h3>
+  <p class="small" style="margin-bottom:18px">Each follows three moves: agree, ask a question that gets the real concern, then offer a small test.<sup><a href="#s-talk">3</a></sup> About half of cold call objections are reflex brush-offs, not real objections.</p>
+  <div id="objections"></div>
+
+  <div class="block cols" style="margin-top:44px;border-bottom:0">
+    <h3>First meeting: five questions</h3>
+    <ul class="plain">
+      <li>How many accounts do you charge off in a typical month, and what is the average balance?</li>
+      <li>Where do they go today, and what does that partner keep?</li>
+      <li>What comes back in the first 12 months?</li>
+      <li>What happens to the accounts your agency returns as uncollectible?</li>
+      <li>What would your compliance team need to see before a 30-day test?</li>
+    </ul>
+  </div>
+
+  <div class="sources" id="s-talk">Sources
+    <ol>
+      <li><a href="https://blog.contactout.io/wp-content/uploads/2023/10/30MPC-Orum-Cold-Call-Guide.pdf">30 Minutes to President's Club and Orum, cold call guide</a></li>
+      <li><a href="https://www.gong.io/resources/labs/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls/">Gong Labs with 30MPC, cold call openers</a></li>
+      <li><a href="https://gong.io/blog/we-found-the-top-objections-across-300m-cold-calls-heres-how-to-handle-them-all">Gong Labs with 30MPC, top objections and the Mr. Miyagi method</a></li>
+    </ol>
+  </div>
+  <div class="next"><button class="btn ghost" data-go="motion">Back</button><button class="btn" data-go="scale">Next: Scaling</button></div>
+ </div>
+</section>
+
+<!-- SCALE -->
+<section class="panel" id="scale" role="tabpanel">
+ <div class="wrap">
+  <p class="kicker">Scaling hypothesis</p>
+  <h2>Win ten direct. Then borrow trust.</h2>
+  <p class="lede">Cold outbound gets the first customers and the proof. After that, the fastest growth in this market comes through the organizations credit unions already buy from.</p>
+
+  <div class="stages">
+    <div class="stage"><div class="when">January to March</div><h3>Direct</h3><p>Tier A credit unions, one seller, success-fee pilots. Goal: ten paying accounts and one written case study.</p></div>
+    <div class="stage"><div class="when">From the first case study</div><h3>Partners</h3><p>Sell through the groups credit unions already trust. One yes can open dozens of accounts.</p></div>
+    <div class="stage"><div class="when">Once the product is proven</div><h3>White label</h3><p>License the AI to small collection agencies. They keep their clients, you power the calls and take a share.</p></div>
+    <div class="stage"><div class="when">Second half of the year</div><h3>Next verticals</h3><p>Buy-here-pay-here dealers and independent auto lenders, using the same playbook and proof.</p></div>
+  </div>
+
+  <div class="block cols" style="margin-top:44px">
+    <h3>Partner types</h3>
+    <ul class="plain">
+      <li><b>Credit union service organizations.</b> Companies owned by groups of credit unions to share vendors. Some invest in fintechs directly.<sup><a href="#s-scale">1</a></sup></li>
+      <li><b>State credit union leagues.</b> Trade groups that endorse vendors. The California league has partnered with collection agencies for its members before.<sup><a href="#s-scale">2</a></sup></li>
+      <li><b>Core system marketplaces.</b> Credit unions run on a few core banking systems. Being a listed integration, as other AI vendors have done with Jack Henry, removes an IT objection.<sup><a href="#s-scale">3</a></sup></li>
+      <li><b>Dealer associations and software.</b> For the second vertical, the independent dealers association and dealer software vendors already bundle partner products.<sup><a href="#s-scale">4</a></sup></li>
+    </ul>
+  </div>
+
+  <div class="block cols">
+    <h3>How partners get paid</h3>
+    <ul class="plain">
+      <li><b>Referral share.</b> A cut of your success fee on every account they bring, for the first year. Simple for them to say yes to.</li>
+      <li><b>Activate early.</b> Most partners send nothing until money lands once. Write their intro email for them and close one deal fast.</li>
+    </ul>
+  </div>
+
+  <div class="block cols">
+    <h3>A possible edge</h3>
+    <div>
+      <p><b style="font-weight:500">Spanish.</b> Hispanic-serving credit unions need bilingual collections and few AI vendors lead with it. A team that already builds for Portuguese may handle Spanish better than most. <span class="assume">to test with you</span></p>
+      <p><b style="font-weight:500">Voice plus text.</b> Nearly half of financially stressed borrowers avoid phone calls, and 81% of credit union members want to resolve late payments on mobile.<sup><a href="#s-scale">5</a></sup> You already do both.</p>
+    </div>
+  </div>
+
+  <div class="block cols">
+    <h3>Next step</h3>
+    <div>
+      <p>Tell me which assumptions are wrong. Three matter most: Track A or Track B, whether the success fee carries over to the US, and whether Spanish is ready.</p>
+      <p>If the shape is right, I can have the full Tier A list and the first sequence ready before January.</p>
+    </div>
+  </div>
+
+  <div class="sources" id="s-scale">Sources
+    <ol>
+      <li><a href="https://www.kinective.io/?p=6590">Kinective partner showcase, Reseda Group</a></li>
+      <li><a href="https://cutimes.com/2005/01/18/california-cu-league-finds-strong-allies-in-cu-battle-for-loss-recovery">CU Times, California league collections partnership</a></li>
+      <li><a href="https://thecreditunionconnection.com/tag/symitar/">Credit Union Connection, Jack Henry vendor integrations</a></li>
+      <li><a href="https://www.autoremarketing.com/bhph/page/89/?page=66">Auto Remarketing, NIADA member benefit program</a></li>
+      <li><a href="https://www.cutimes.com/amp/2026/04/24/credit-unions-must-embrace-automated-collections-before-its-too-late/">CU Times, citing PYMNTS and PSCU</a></li>
+    </ol>
+  </div>
+  <div class="next"><button class="btn ghost" data-go="talk">Back</button><button class="btn" data-go="start">Back to start</button></div>
+ </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">Built by James Fitchett, November 2026. Public figures from NCUA, the New York Fed and the sources listed on each tab. Anything marked as an assumption is mine.</div></footer>
+
+<script>window.ACCOUNTS=[{"name":"Georgia's Own","city":"Atlanta","st":"GA","id":67390,"assets":4200000000.0,"loans":3200000000.0,"dq":1.15,"dqPrev":1.64,"nco":4.56,"ja":false,"tier":"A"},{"name":"Lafayette","city":"Rockville","st":"MD","id":619,"assets":2000000000.0,"loans":1000000000.0,"dq":2.19,"dqPrev":1.89,"nco":3.3,"ja":false,"tier":"A"},{"name":"Hughes","city":"Tucson","st":"AZ","id":7531,"assets":2600000000.0,"loans":2100000000.0,"dq":2.16,"dqPrev":1.32,"nco":3.03,"ja":false,"tier":"A"},{"name":"Tucson","city":"Tucson","st":"AZ","id":2157,"assets":1000000000.0,"loans":490500000.0,"dq":1.5,"dqPrev":1.2,"nco":2.08,"ja":false,"tier":"A"},{"name":"Connexus","city":"Wausau","st":"WI","id":66538,"assets":3800000000.0,"loans":3400000000.0,"dq":1.8,"dqPrev":2.11,"nco":1.99,"ja":false,"tier":"A"},{"name":"Oregon Community","city":"Eugene","st":"OR","id":65856,"assets":3500000000.0,"loans":3000000000.0,"dq":1.6,"dqPrev":1.8,"nco":1.7,"ja":false,"tier":"A"},{"name":"Marine","city":"Jacksonville","st":"NC","id":12977,"assets":1100000000.0,"loans":843100000.0,"dq":1.7,"dqPrev":1.2,"nco":1.65,"ja":false,"tier":"A"},{"name":"Velocity","city":"Austin","st":"TX","id":68359,"assets":1100000000.0,"loans":563800000.0,"dq":0.7,"dqPrev":0.8,"nco":1.6,"ja":false,"tier":"A"},{"name":"TTCU","city":"Tulsa","st":"OK","id":24887,"assets":2700000000.0,"loans":1200000000.0,"dq":1.5,"dqPrev":1.43,"nco":1.57,"ja":false,"tier":"A"},{"name":"All In","city":"Daleville","st":"AL","id":17642,"assets":3700000000.0,"loans":2900000000.0,"dq":1.82,"dqPrev":null,"nco":1.55,"ja":false,"tier":"A"},{"name":"I.H. Mississippi Valley","city":"Moline","st":"IL","id":60337,"assets":2300000000.0,"loans":1900000000.0,"dq":0.9,"dqPrev":null,"nco":1.49,"ja":false,"tier":"B"},{"name":"Communication","city":"Oklahoma City","st":"OK","id":3454,"assets":2400000000.0,"loans":1600000000.0,"dq":1.24,"dqPrev":1.17,"nco":1.47,"ja":false,"tier":"B"},{"name":"Vantage West","city":"Tucson","st":"AZ","id":68558,"assets":3300000000.0,"loans":2500000000.0,"dq":0.8,"dqPrev":0.77,"nco":1.47,"ja":true,"tier":"A"},{"name":"Peak","city":"Olympia","st":"WA","id":68271,"assets":4200000000.0,"loans":3400000000.0,"dq":1.22,"dqPrev":0.65,"nco":1.46,"ja":false,"tier":"B"},{"name":"Southland","city":"Los Alamitos","st":"CA","id":68415,"assets":1300000000.0,"loans":869700000.0,"dq":1.48,"dqPrev":1.19,"nco":1.46,"ja":false,"tier":"B"},{"name":"Centris","city":"Omaha","st":"NE","id":28,"assets":1500000000.0,"loans":1300000000.0,"dq":1.3,"dqPrev":1.7,"nco":1.42,"ja":false,"tier":"B"},{"name":"CoastHills","city":"Santa Maria","st":"CA","id":24957,"assets":1800000000.0,"loans":1300000000.0,"dq":0.7,"dqPrev":1.44,"nco":1.41,"ja":false,"tier":"B"},{"name":"A+","city":"Austin","st":"TX","id":6178,"assets":2600000000.0,"loans":2100000000.0,"dq":2.09,"dqPrev":null,"nco":1.38,"ja":false,"tier":"B"},{"name":"Addition Financial","city":"Lake Mary","st":"FL","id":68702,"assets":3700000000.0,"loans":2100000000.0,"dq":1.3,"dqPrev":0.7,"nco":1.36,"ja":false,"tier":"B"},{"name":"Kitsap","city":"Bremerton","st":"WA","id":68576,"assets":2500000000.0,"loans":2000000000.0,"dq":0.8,"dqPrev":0.98,"nco":1.35,"ja":false,"tier":"B"},{"name":"Barksdale","city":"Barksdale AFB","st":"LA","id":9589,"assets":2500000000.0,"loans":1400000000.0,"dq":1.92,"dqPrev":1.36,"nco":1.17,"ja":false,"tier":"A"},{"name":"Raiz","city":"El Paso","st":"TX","id":1409,"assets":1100000000.0,"loans":858700000.0,"dq":0.95,"dqPrev":null,"nco":1.13,"ja":false,"tier":"B"},{"name":"MECU of Baltimore","city":"Baltimore","st":"MD","id":66787,"assets":1300000000.0,"loans":800900000.0,"dq":1.8,"dqPrev":1.74,"nco":0.96,"ja":false,"tier":"B"},{"name":"Credit Union 1","city":"Lombard","st":"IL","id":68727,"assets":2900000000.0,"loans":1900000000.0,"dq":1.76,"dqPrev":1.74,"nco":null,"ja":false,"tier":"B"},{"name":"Rave Financial","city":"Beaumont","st":"TX","id":68735,"assets":1200000000.0,"loans":1000000000.0,"dq":0.6,"dqPrev":0.48,"nco":null,"ja":false,"tier":"C"},{"name":"Achieva","city":"Dunedin","st":"FL","id":60087,"assets":3400000000.0,"loans":2700000000.0,"dq":0.3,"dqPrev":0.24,"nco":0.5,"ja":true,"tier":"C"}];window.ACCOUNTS_NOTE="Figures come from NCUA call reports as published by <a href='https://cuscorecard.blastpoint.com/leaderboards'>BlastPoint's Credit Union Scorecard</a>: third quarter 2026 (preliminary) where available, otherwise second quarter. Assets and loans are rounded. This is a sample drawn from the highest-loss credit unions in the $1B to $5B band, so Tier C is thin and $500M to $1B accounts are still to add. I removed commercial and mortgage-heavy credit unions by hand. Estimated value uses the calculator defaults: 9.8% recovery and a 20% fee. A green dot marks a <a href='https://inclusiv.org/services/juntos-avanzamos-designation'>Juntos Avanzamos</a> credit union. Each account should be checked against its own filing before outreach.";</script>
+<script>
+(function(){
+var ORDER=["start","bet","icp","money","accounts","motion","talk","scale"];
+var INDEX=[
+ ["bet","The bet","Why credit unions, why now, and where your product plugs in."],
+ ["icp","ICP","Exactly which credit unions, and which verticals wait."],
+ ["money","Money on the table","A calculator for what one account is worth."],
+ ["accounts","Target accounts","Named credit unions, tiered A, B and C."],
+ ["motion","The motion","Tools, sequence and timeline to first pilots."],
+ ["talk","Talk tracks","The call, the email and the objections."],
+ ["scale","Scaling","Channel partners and what comes after."]
+];
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var arrow='<svg viewBox="0 0 14 14" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg>';
+$("#index").innerHTML=INDEX.map(function(x,i){return '<li><button data-go="'+x[0]+'"><span class="n">'+(i+1)+'</span><span class="t">'+x[1]+'</span><span class="d">'+x[2]+'</span>'+arrow+'</button></li>'}).join("");
+
+function go(id,push){
+  if(ORDER.indexOf(id)<0) id="start";
+  $$(".panel").forEach(function(p){p.classList.toggle("on",p.id===id)});
+  $$(".tab").forEach(function(t){var on=t.dataset.go===id;t.setAttribute("aria-selected",on);if(on&&t.scrollIntoView)t.scrollIntoView({block:"nearest",inline:"center"})});
+  $("#progress").style.width=((ORDER.indexOf(id)+1)/ORDER.length*100)+"%";
+  if(push!==false){history.replaceState(null,"","#"+id);window.scrollTo(0,0)}
+}
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-go]"); if(b){e.preventDefault();go(b.dataset.go)}
+  var s=e.target.closest("sup a"); if(s){e.preventDefault();var t=$(s.getAttribute("href"));if(t)t.scrollIntoView({behavior:"smooth",block:"center"})}
+});
+document.addEventListener("keydown",function(e){
+  if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;
+  var i=ORDER.indexOf(($(".panel.on")||{}).id);
+  if(e.key==="ArrowRight"&&i<ORDER.length-1)go(ORDER[i+1]);
+  if(e.key==="ArrowLeft"&&i>0)go(ORDER[i-1]);
+});
+
+/* ---------- formatting ---------- */
+function money(n){var a=Math.abs(n);
+  if(a>=1e9)return "$"+(n/1e9).toFixed(a>=1e10?1:2)+"B";
+  if(a>=999500)return "$"+(n/1e6).toFixed(a>=1e8?0:(a>=1e7?1:2))+"M";
+  if(a>=1e4)return "$"+Math.round(n/1e3)+"K";
+  if(a>=1e3)return "$"+(n/1e3).toFixed(1)+"K";
+  return "$"+Math.round(n)}
+function pct(n,d){return n.toFixed(d==null?2:d)+"%"}
+
+/* ---------- calculator (pure functions, tested separately) ---------- */
+function trackA(i){ // loans in $, rates in %
+  var off=i.loans*i.nco/100, rec=off*i.rec/100, rev=rec*i.fee/100;
+  return {off:off,rec:rec,rev:rev,cuNet:rec-rev,agNet:rec*(1-i.afee/100),agFee:rec*i.afee/100,extra:rec*(i.afee-i.fee)/100};
+}
+function trackB(i){
+  var bal=i.loans*i.dq/100, members=bal/i.bal, attempts=members*i.att*12, rev=attempts*i.ppa, human=attempts*i.hc;
+  return {bal:bal,members:members,attempts:attempts,rev:rev,human:human,save:human-rev};
+}
+window.NORTE={trackA:trackA,trackB:trackB};
+
+var track="A", ids=["loans","nco","rec","fee","afee","dq","bal","att","ppa","hc"], el={};
+ids.forEach(function(k){el[k]=$("#"+k)});
+function val(k){return parseFloat(el[k].value)}
+function fill(r){r.style.setProperty("--p",((r.value-r.min)/(r.max-r.min)*100)+"%")}
+function render(){
+  ids.forEach(function(k){fill(el[k])});
+  var loans=val("loans")*1e6;
+  $("#o-loans").textContent=money(loans);
+  $("#o-nco").textContent=pct(val("nco"));$("#o-rec").textContent=pct(val("rec"),1);
+  $("#o-fee").textContent=pct(val("fee"),0);$("#o-afee").textContent=pct(val("afee"),0);
+  $("#o-dq").textContent=pct(val("dq"));$("#o-bal").textContent="$"+val("bal").toLocaleString("en-US");
+  $("#o-att").textContent=val("att");$("#o-ppa").textContent="$"+val("ppa").toFixed(2);$("#o-hc").textContent="$"+val("hc").toFixed(2);
+  var li=function(a,b,c){return '<li'+(c?' class="hl"':'')+'><span>'+a+'</span><span>'+b+'</span></li>'};
+  if(track==="A"){
+    var a=trackA({loans:loans,nco:val("nco"),rec:val("rec"),fee:val("fee"),afee:val("afee")});
+    $("#r-big").textContent=money(a.rev);
+    $("#r-flow").innerHTML=li("Loans written off per year",money(a.off))+li("Recovered at "+pct(val("rec"),1),money(a.rec))+li("Your "+pct(val("fee"),0)+" success fee",money(a.rev),1);
+    var mx=Math.max(a.cuNet,a.agNet,1);
+    $("#r-bars").innerHTML='<div class="small" style="margin-bottom:6px">What the credit union keeps</div>'+
+      '<div class="row me"><span>With you</span><div class="track"><div class="fill" style="width:'+(a.cuNet/mx*100)+'%"></div></div><span>'+money(a.cuNet)+'</span></div>'+
+      '<div class="row"><span>With agency</span><div class="track"><div class="fill" style="width:'+(a.agNet/mx*100)+'%"></div></div><span>'+money(a.agNet)+'</span></div>';
+    var d=a.extra;
+    $("#r-note").textContent=(d>=0?"The credit union keeps "+money(d)+" more a year at the same recovery rate. ":"At this fee the credit union keeps "+money(-d)+" less than with its agency. ")+"Any extra recovery from calling every account is upside for both sides.";
+  }else{
+    var b=trackB({loans:loans,dq:val("dq"),bal:val("bal"),att:val("att"),ppa:val("ppa"),hc:val("hc")});
+    $("#r-big").textContent=money(b.rev);
+    $("#r-flow").innerHTML=li("Balance 60+ days late",money(b.bal))+li("Late members at any time",Math.round(b.members).toLocaleString("en-US"))+li("Contact attempts per year",Math.round(b.attempts).toLocaleString("en-US"))+li("Your revenue at $"+val("ppa").toFixed(2)+" each",money(b.rev),1);
+    var m2=Math.max(b.human,b.rev,1);
+    $("#r-bars").innerHTML='<div class="small" style="margin-bottom:6px">Cost of the same outreach</div>'+
+      '<div class="row me"><span>With you</span><div class="track"><div class="fill" style="width:'+(b.rev/m2*100)+'%"></div></div><span>'+money(b.rev)+'</span></div>'+
+      '<div class="row"><span>With staff</span><div class="track"><div class="fill" style="width:'+(b.human/m2*100)+'%"></div></div><span>'+money(b.human)+'</span></div>';
+    $("#r-note").textContent=(b.save>=0?"The credit union saves "+money(b.save)+" a year against staff making the same attempts. ":"At this price the outreach costs "+money(-b.save)+" more than staff. ")+"Smaller revenue per account than Track A, which is why I would lead with recovery.";
+  }
+}
+function setTrack(t){track=t;$("#trA").setAttribute("aria-pressed",t==="A");$("#trB").setAttribute("aria-pressed",t==="B");$("#fa").hidden=t!=="A";$("#fb").hidden=t!=="B";render()}
+$("#trA").onclick=function(){setTrack("A")};$("#trB").onclick=function(){setTrack("B")};
+ids.forEach(function(k){el[k].addEventListener("input",function(){if(k==="loans"||k==="nco"||k==="dq")$("#preset").value="";render()})});
+
+/* ---------- accounts ---------- */
+var AC=(window.ACCOUNTS||[]).slice(), AVG_NCO=0.78, AVG_DQ=0.96;
+function clamp(v,r){return Math.min(parseFloat(r.max),Math.max(parseFloat(r.min),v))}
+function estValue(a){return trackA({loans:a.loans,nco:a.nco!=null?a.nco:AVG_NCO,rec:9.8,fee:20,afee:35}).rev}
+AC.forEach(function(a){a.val=estValue(a)});
+var rank={A:0,B:1,C:2};
+AC.sort(function(x,y){return rank[x.tier]-rank[y.tier]||y.val-x.val});
+
+var presets=[{n:"Typical $1.5B credit union",loans:1100,nco:0.78,dq:0.96},{n:"Typical $500M credit union",loans:375,nco:0.78,dq:0.96},{n:"Typical $5B credit union",loans:3750,nco:0.78,dq:0.96}];
+var sel=$("#preset");
+sel.innerHTML='<option value="">Custom</option><optgroup label="Typical">'+presets.map(function(p,i){return '<option value="p'+i+'">'+p.n+'</option>'}).join("")+'</optgroup>'+
+  (AC.length?'<optgroup label="Target accounts">'+AC.map(function(a,i){return '<option value="a'+i+'">'+a.name+', '+a.st+'</option>'}).join("")+'</optgroup>':'');
+function applyPreset(v){
+  if(!v)return; var p;
+  if(v[0]==="p"){p=presets[+v.slice(1)]}
+  else{var a=AC[+v.slice(1)];p={loans:a.loans/1e6,nco:a.nco!=null?a.nco:AVG_NCO,dq:a.dq!=null?a.dq:AVG_DQ}}
+  el.loans.value=clamp(Math.round(p.loans/25)*25,el.loans);el.nco.value=clamp(p.nco,el.nco);el.dq.value=clamp(p.dq,el.dq);render();
+}
+sel.onchange=function(){applyPreset(sel.value)};
+sel.value="p0";
+
+var filter="all";
+function rows(){
+  var list=AC.filter(function(a){return filter==="all"||(filter==="ja"?a.ja:a.tier===filter)});
+  $("#rows").innerHTML=list.map(function(a){
+    var i=AC.indexOf(a), tr="";
+    if(a.dq!=null&&a.dqPrev!=null){var d=a.dq-a.dqPrev;tr=d>0.02?'<span class="up">up '+d.toFixed(2)+'</span>':(d<-0.02?'<span class="dn">down '+Math.abs(d).toFixed(2)+'</span>':'')}
+    return '<tr class="row" data-i="'+i+'" tabindex="0"><td><span class="tier '+a.tier+'">'+a.tier+'</span></td>'+
+      '<td class="nm"><b>'+(a.ja?'<span class="dot" title="Juntos Avanzamos designated"></span>':'')+a.name+'</b><span>'+a.city+', '+a.st+' <a href="https://cuscorecard.blastpoint.com/cu/'+a.id+'" onclick="event.stopPropagation()">source</a></span></td>'+
+      '<td class="num">'+money(a.assets)+'</td><td class="num">'+money(a.loans)+'</td>'+
+      '<td class="num">'+(a.dq!=null?pct(a.dq):"n/a")+tr+'</td><td class="num">'+(a.nco!=null?pct(a.nco):"n/a")+'</td>'+
+      '<td class="num"><b style="font-weight:500">'+money(a.val)+'</b></td></tr>'}).join("")||'<tr><td colspan="7" class="small">No accounts in this view.</td></tr>';
+  $("#count").textContent=list.length+" of "+AC.length+" accounts";
+}
+$("#filters").addEventListener("click",function(e){var c=e.target.closest(".chip");if(!c)return;filter=c.dataset.f;$$(".chip").forEach(function(x){x.setAttribute("aria-pressed",x===c)});rows()});
+function pick(tr){if(!tr)return;sel.value="a"+tr.dataset.i;setTrack("A");applyPreset(sel.value);go("money")}
+$("#rows").addEventListener("click",function(e){pick(e.target.closest("tr.row"))});
+$("#rows").addEventListener("keydown",function(e){if(e.key==="Enter")pick(e.target.closest("tr.row"))});
+if(window.ACCOUNTS_NOTE)$("#acct-note").innerHTML=window.ACCOUNTS_NOTE;
+if(AC.length){var tot=AC.reduce(function(s,a){return s+a.val},0);
+  $("#acct-h").textContent=AC.length+" real credit unions, tiered.";
+  $("#acct-lede").innerHTML="A first cut of the list, tiered by how urgent the problem looks from the outside. Together they are worth about <b>"+money(tot)+" a year</b> at the default assumptions. Tap a row to load it into the calculator."}
+
+/* ---------- objections ---------- */
+var plus='<svg viewBox="0 0 14 14" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>';
+var OBJ=[
+ ["We already use an agency.","Existing solution",
+  "Makes sense. I would be surprised if you did not.",
+  "Out of curiosity, if a perfect recovery partner is a 10, where is yours today? And what happens to the accounts they send back?",
+  "We are not asking you to replace them. Give us one batch they have already returned as uncollectible. If we recover nothing, you have lost nothing."],
+ ["Compliance will never approve AI calling members.","Situational",
+  "They should be careful. AI voice calls fall under federal consent rules, and I would be worried if nobody asked.",
+  "What did compliance need to see the last time you brought in a new collections vendor?",
+  "The first step is not a call to a member. It is a 20-minute review of the scripts, disclosures and opt-outs with your compliance lead. If they say no, we stop there."],
+ ["I don't want a robot calling our members.","Situational",
+  "Fair. How a collections call feels matters more at a credit union than anywhere else.",
+  "When an agency calls a member about a written-off loan today, do you get to hear those calls?",
+  "Every call we make is recorded and yours to review. Listen to five from the pilot batch and judge the tone yourself before anything expands."],
+ ["Just send me some information.","Brush-off",
+  "Happy to. Most of what I would send is a brochure, and you have seen enough of those.",
+  "So I send something useful: is the bigger issue what your agency keeps, or the accounts nobody is working?",
+  "I will send one page with your own numbers on it. If it is off, tell me and I will leave you alone. If it is close, 15 minutes next week?"],
+ ["Not interested.","Brush-off",
+  "Understood, and I did call out of nowhere.",
+  "Before I go: is recovery just not a priority this year, do you feel covered, or was that simply a bad cold call?",
+  "No pitch needed here. Whatever they answer is the real objection, and the conversation restarts from that."],
+ ["There's no budget for this.","Situational",
+  "That is the answer I would expect in November.",
+  "Is the budget closed for the year, or is there a point where new vendors get looked at?",
+  "This does not need a budget line. The fee comes out of money that is currently written off as zero. A 30-day test costs nothing unless it collects."]
+];
+$("#objections").innerHTML=OBJ.map(function(o){return '<details><summary><span>"'+o[0]+'"</span><span class="tag">'+o[1]+'</span>'+plus+'</summary><dl class="ans"><dt>Agree</dt><dd>'+o[2]+'</dd><dt>Ask</dt><dd>'+o[3]+'</dd><dt>Offer the test</dt><dd>'+o[4]+'</dd></dl></details>'}).join("");
+
+rows();render();go((location.hash||"#start").slice(1),false);
+window.addEventListener("hashchange",function(){go(location.hash.slice(1),false)});
+})();
+</script>
+</body>
+</html>
